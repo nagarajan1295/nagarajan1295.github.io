@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nagarajan Radhakrishnan | CFD and Aerosol Measurement Portfolio</title>
+<meta name="description" content="Portfolio of Nagarajan Radhakrishnan: CFD, wind-tunnel and flight instrumentation for aerosol sampling from aircraft and low-cost sensors.">
+<style>
+  :root{
+    --bg:#ffffff; --surface:#f5f6f8; --text:#16191d; --muted:#5a626d; --line:#dfe3e8;
+    --accent:#0b5cad; --accent-ink:#ffffff; --chip:#e8f0fa;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#0f1318; --surface:#171d25; --text:#e8ecf1; --muted:#9aa5b1; --line:#2a323d;
+           --accent:#6db3ff; --accent-ink:#0b1117; --chip:#1b2a3d; }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--text);
+       font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  a{color:var(--accent)}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+  nav{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);
+      backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:22px;align-items:center;height:54px;overflow-x:auto;white-space:nowrap}
+  nav b{margin-right:auto}
+  nav a{text-decoration:none;color:var(--muted);font-size:14px}
+  nav a:hover{color:var(--text)}
+  header.hero{padding:64px 0 40px}
+  .eyebrow{color:var(--accent);font-weight:600;font-size:14px;letter-spacing:.06em;text-transform:uppercase}
+  h1{font-size:clamp(32px,6vw,52px);line-height:1.1;margin:.2em 0 .3em}
+  .lead{font-size:clamp(17px,2.4vw,21px);color:var(--muted);max-width:44em;margin:0 0 24px}
+  .btns{display:flex;gap:12px;flex-wrap:wrap}
+  .btn{display:inline-block;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600;
+       border:1px solid var(--line);color:var(--text)}
+  .btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-top:36px}
+  .stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+  .stat b{display:block;font-size:24px;line-height:1.2}
+  .stat span{color:var(--muted);font-size:14px}
+  section{padding:44px 0;border-top:1px solid var(--line)}
+  h2{font-size:28px;margin:0 0 6px}
+  .sub{color:var(--muted);margin:0 0 26px;max-width:46em}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px}
+  .card h3{margin:0 0 8px;font-size:18px}
+  .card p{margin:0;color:var(--muted)}
+  /* tabs */
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+  .tab{font:inherit;cursor:pointer;padding:9px 16px;border-radius:999px;border:1px solid var(--line);
+       background:var(--bg);color:var(--text)}
+  .tab[aria-selected="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+  .panel[hidden]{display:none}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+  @media (max-width:760px){.two{grid-template-columns:1fr}}
+  ul.tight{padding-left:1.15em;margin:.4em 0}
+  ul.tight li{margin:.35em 0}
+  figure{margin:0}
+  figure img{width:100%;height:auto;display:block;border-radius:10px;border:1px solid var(--line);
+             background:#fff;cursor:zoom-in}
+  figcaption{font-size:14px;color:var(--muted);margin-top:8px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:22px}
+  .widget{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;margin-top:22px}
+  .widget h3{margin:0 0 4px;font-size:17px}
+  .widget p.hint{margin:0 0 12px;color:var(--muted);font-size:14px}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  .chip{font:inherit;font-size:14px;cursor:pointer;padding:6px 14px;border-radius:999px;
+        border:1px solid var(--line);background:var(--bg);color:var(--text)}
+  .chip[aria-pressed="true"]{background:var(--chip);border-color:var(--accent);color:var(--accent);font-weight:600}
+  .tag{display:inline-block;font-size:12px;padding:2px 9px;border-radius:999px;background:var(--chip);
+       color:var(--accent);margin:0 6px 6px 0;font-weight:600}
+  ol.pubs{padding-left:1.2em}
+  ol.pubs li{margin:.7em 0}
+  .note{font-size:14px;color:var(--muted)}
+  footer{padding:30px 0 50px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+  /* lightbox */
+  #lb{position:fixed;inset:0;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;
+      z-index:50;padding:24px;cursor:zoom-out}
+  #lb.on{display:flex}
+  #lb img{max-width:100%;max-height:100%;border-radius:8px;background:#fff}
+  :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <b>N. Radhakrishnan</b>
+  <a href="#about">About</a><a href="#strengths">What sets me apart</a><a href="#work">Projects</a>
+  <a href="#ai">AI workflow</a><a href="#pubs">Publications</a><a href="#contact">Contact</a>
+</div></nav>
+
+<main class="wrap">
+
+<header class="hero" id="about">
+  <div class="eyebrow">Aerosol and flow measurement engineer</div>
+  <h1>Nagarajan Radhakrishnan</h1>
+  <p class="lead">I design aircraft aerosol inlets in CFD, build them, fly them on NASA's WB-57, and test them in the wind tunnel.
+     Ph.D. candidate in Mechanical and Aerospace Engineering at Clarkson University, graduating May 2027.</p>
+  <div class="btns">
+    <a class="btn primary" href="#work">See the work</a>
+    <a class="btn" href="mailto:radhakn@clarkson.edu">radhakn@clarkson.edu</a>
+    <a class="btn" href="https://github.com/nagarajan1295">GitHub</a>
+  </div>
+  <div class="stats">
+    <div class="stat"><b>Mach 0.7</b><span>design condition, about 0.25 atm, 17 to 18 km altitude</span></div>
+    <div class="stat"><b>7 flights</b><span>NASA WB-57, SABRE 2025 campaign</span></div>
+    <div class="stat"><b>10 nm to 10 µm</b><span>particle size range the inlet is designed to sample</span></div>
+    <div class="stat"><b>7 years</b><span>of hands-on aerosol instrumentation research</span></div>
+  </div>
+</header>
+
+<section id="strengths">
+  <h2>What sets me apart</h2>
+  <p class="sub">Plenty of Ph.D. students have run CFD and used MATLAB. This is how my work differs.</p>
+  <div class="cards">
+    <div class="card"><h3>CFD that reaches hardware</h3>
+      <p>Compressible, low-pressure flow modeled in ANSYS Fluent, coupled to a custom turbulent particle-tracking model, then
+         manufactured, flown, and checked against hot-wire data in the lab.</p></div>
+    <div class="card"><h3>End-to-end measurement</h3>
+      <p>Hot-wire anemometry, flight electronics (Teensy, Arduino), pressure sensing, calibration, and the data pipelines that turn
+         raw flight logs into defensible numbers.</p></div>
+    <div class="card"><h3>AI-assisted, physics-checked</h3>
+      <p>Daily use of AI coding tools to move faster, with every result validated against first-principles physics and independent measurements.</p></div>
+  </div>
+</section>
+
+<section id="work">
+  <h2>Projects</h2>
+  <p class="sub">Select a project. Click any figure to enlarge it.</p>
+
+  <div class="tabs" role="tablist" aria-label="Projects">
+    <button class="tab" role="tab" id="t-nissa" aria-controls="p-nissa" aria-selected="true">NISSA aircraft inlet (CFD)</button>
+    <button class="tab" role="tab" id="t-pa" aria-controls="p-pa" aria-selected="false">PurpleAir sensor aspiration (CFD)</button>
+    <button class="tab" role="tab" id="t-flight" aria-controls="p-flight" aria-selected="false">Flight and wind-tunnel measurements</button>
+    <button class="tab" role="tab" id="t-iit" aria-controls="p-iit" aria-selected="false">Earlier: dust monitor, IIT Madras</button>
+  </div>
+
+  <!-- NISSA -->
+  <div class="panel" id="p-nissa" role="tabpanel" aria-labelledby="t-nissa">
+    <span class="tag">ANSYS Fluent</span><span class="tag">RANS k-ω SST / k-ε</span><span class="tag">Particle tracking</span><span class="tag">NASA WB-57</span>
+    <div class="two">
+      <div>
+        <h3>NISSA: Nested Inlet for Sampling Stratospheric Aerosol</h3>
+        <p>Sampling aerosol from a fast aircraft means slowing the air down inside an inlet, and that creates turbulence that
+           knocks particles out of the sample. NISSA is a nested design built to avoid that.</p>
+        <ul class="tight">
+          <li><b>Outer section</b> shrouds the sample so the flow is unaffected by the aircraft's angle of attack.</li>
+          <li><b>Middle section</b> samples isokinetically and slows the flow without adding turbulence.</li>
+          <li><b>Final section</b> sub-samples the slowed flow and turns it into the aircraft plumbing.</li>
+        </ul>
+        <p>The geometry came out of a parametric CFD study (2D and 3D, near-wall resolution y⁺ ≤ 1, k-ω SST and k-ε), integrated with a
+           new turbulent particle-trajectory model developed in our group. The inlet was then manufactured and flown on the WB-57.</p>
+      </div>
+      <figure><img src="assets/nissa_hardware.webp" alt="Manufactured NISSA inlet, machined aluminum with curved sample line" loading="lazy">
+        <figcaption>The manufactured inlet.</figcaption></figure>
+    </div>
+
+    <div class="widget">
+      <h3>Interactive: how inlet configuration changes centerline turbulence</h3>
+      <p class="hint">Pick a configuration to see its turbulence-intensity field along the sampling tube.</p>
+      <div class="chips" id="contourChips">
+        <button class="chip" data-img="assets/nissa_c3.webp"  data-cap="3 mm configuration: turbulence intensity along the inlet." aria-pressed="true">3 mm</button>
+        <button class="chip" data-img="assets/nissa_c7.webp"  data-cap="7 mm configuration (43 LPM sampling flow): turbulence intensity along the inlet." aria-pressed="false">7 mm</button>
+        <button class="chip" data-img="assets/nissa_c11.webp" data-cap="11 mm configuration (101 LPM sampling flow): turbulence intensity along the inlet." aria-pressed="false">11 mm</button>
+      </div>
+      <figure><img id="contourImg" src="assets/nissa_c3.webp" alt="Turbulence intensity contour along the inlet">
+        <figcaption id="contourCap">3 mm configuration: turbulence intensity along the inlet.</figcaption></figure>
+      <figure style="margin-top:16px"><img src="assets/nissa_centerline.webp" alt="Centerline turbulence intensity versus axial length for 3, 7 and 11 mm" loading="lazy" style="max-width:560px">
+        <figcaption>Centerline turbulence intensity versus axial length for the three configurations.</figcaption></figure>
+    </div>
+
+    <div class="grid">
+      <figure><img src="assets/nissa_wb57.webp" alt="NISSA mounted under the WB-57 aircraft" loading="lazy"><figcaption>Mounted on NASA's WB-57 for the SABRE flights.</figcaption></figure>
+      <figure><img src="assets/nissa_section.webp" alt="3D cross-section of NISSA" loading="lazy"><figcaption>Cross-section of the nested design.</figcaption></figure>
+      <figure><img src="assets/nissa_mesh.webp" alt="Refined 3D mesh around the inlet" loading="lazy"><figcaption>Refined 3D mesh around the inlet.</figcaption></figure>
+      <figure><img src="assets/nissa_ti3d.webp" alt="3D turbulence intensity contour" loading="lazy"><figcaption>3D turbulence-intensity contour for the nested design.</figcaption></figure>
+      <figure><img src="assets/nissa_expansion.webp" alt="Velocity and turbulence for two expansion angles" loading="lazy"><figcaption>Velocity magnitude for two expansion-angle designs.</figcaption></figure>
+      <figure><img src="assets/nissa_tracks.webp" alt="Particle trajectories through the nested inlet" loading="lazy"><figcaption>Particle trajectories through the nested inlet.</figcaption></figure>
+      <figure><img src="assets/nissa_transmission.webp" alt="Transmission efficiency versus particle diameter, two tracking methods" loading="lazy"><figcaption>Particle transmission across diameter: non-stochastic tracking versus discrete random walk (k-ω).</figcaption></figure>
+      <figure><img src="assets/nissa_reynolds.webp" alt="Reynolds number design space" loading="lazy"><figcaption>Design space: Reynolds number against tube diameter and expansion angle.</figcaption></figure>
+      <figure><img src="assets/nissa_dean.webp" alt="Dean number design space" loading="lazy"><figcaption>Design space: Dean number against bending radius.</figcaption></figure>
+    </div>
+  </div>
+
+  <!-- PurpleAir -->
+  <div class="panel" id="p-pa" role="tabpanel" aria-labelledby="t-pa" hidden>
+    <span class="tag">ANSYS Fluent</span><span class="tag">Discrete random walk</span><span class="tag">Low-cost sensors</span>
+    <div class="two">
+      <div>
+        <h3>Aspiration efficiency of the PurpleAir PA-II-Flex</h3>
+        <p>Low-cost sensors such as the Plantower PMS5003 report PM1, PM2.5 and PM10, but the housing around them decides which
+           particles actually reach the sensor. I modeled the PA-II-Flex enclosure in 3D and computed how many particles of each size make it
+           through at five wind speeds (0.4, 3, 5, 10 and 20 m/s), with and without turbulent dispersion.</p>
+        <ul class="tight">
+          <li>3D model of the housing and sensor slit, k-ε and k-ω SST turbulence models, Fluent discrete random walk particle tracking.</li>
+          <li>Results compared against classical sampling correlations; they do not capture the flow entering this enclosure.</li>
+          <li>Presented at AAAR, with field-data validation as the next step.</li>
+        </ul>
+      </div>
+      <figure><img src="assets/pa_hardware.webp" alt="PurpleAir PA-II-Flex opened to show the two sensors" loading="lazy" style="max-width:340px">
+        <figcaption>The PA-II-Flex housing with its Plantower sensors.</figcaption></figure>
+    </div>
+
+    <div class="widget">
+      <h3>Interactive: my CFD against published correlations</h3>
+      <p class="hint">Fraction of particles crossing into the sensor against particle size (Stokes number), at five wind speeds.
+         Switch the overlay to compare.</p>
+      <div class="chips" id="paChips">
+        <button class="chip" data-img="assets/pa_stokes.webp"     data-cap="CFD results only, at five wind speeds." aria-pressed="true">CFD only</button>
+        <button class="chip" data-img="assets/pa_vs_davis.webp"   data-cap="CFD with the Davis and Subari correlation (0.4 m/s) overlaid." aria-pressed="false">+ Davis and Subari</button>
+        <button class="chip" data-img="assets/pa_vs_hangal.webp"  data-cap="CFD with the Hangal and Willeke correlation overlaid." aria-pressed="false">+ Hangal and Willeke</button>
+        <button class="chip" data-img="assets/pa_vs_durham.webp"  data-cap="CFD with the Durham and Lundgren correlation overlaid." aria-pressed="false">+ Durham and Lundgren</button>
+      </div>
+      <figure><img id="paImg" src="assets/pa_stokes.webp" alt="Particles crossing versus square root of Stokes number"><figcaption id="paCap">CFD results only, at five wind speeds.</figcaption></figure>
+    </div>
+
+    <div class="grid">
+      <figure><img src="assets/pa_results.webp" alt="Percent of particles crossing versus particle diameter at five wind speeds" loading="lazy"><figcaption>Particles crossing into the sensor versus diameter, five wind speeds.</figcaption></figure>
+      <figure><img src="assets/pa_geometry.webp" alt="3D model of the housing" loading="lazy"><figcaption>3D model of the housing and sensor slits.</figcaption></figure>
+      <figure><img src="assets/pa_tracks_side.webp" alt="Particle tracks around the housing, side view" loading="lazy"><figcaption>Particle tracks around the housing, side view.</figcaption></figure>
+      <figure><img src="assets/pa_tracks_top.webp" alt="Particle tracks around the housing, top view" loading="lazy"><figcaption>Particle tracks, top view.</figcaption></figure>
+      <figure><img src="assets/pa_tracks_cut.webp" alt="Particle tracks entering the housing" loading="lazy"><figcaption>Particle tracks entering the enclosure.</figcaption></figure>
+      <figure><img src="assets/pa_pressure.webp" alt="Static pressure contour on the sensor plane" loading="lazy"><figcaption>Static pressure on the sensor plane.</figcaption></figure>
+      <figure><img src="assets/pa_dp.webp" alt="Pressure drop versus wind speed" loading="lazy"><figcaption>Pressure drop across the enclosure as a function of wind speed.</figcaption></figure>
+    </div>
+  </div>
+
+  <!-- Flight -->
+  <div class="panel" id="p-flight" role="tabpanel" aria-labelledby="t-flight" hidden>
+    <span class="tag">Hot-wire anemometry</span><span class="tag">Teensy 4.1</span><span class="tag">MATLAB</span><span class="tag">Wind tunnel</span>
+    <h3>Measuring what actually happens inside the inlet</h3>
+    <p>CFD only matters if the real inlet behaves the way the model says. NISSA flew seven research flights on the WB-57 during the SABRE 2025
+       test campaign, with a miniature hot-wire, absolute and differential pressure taps, and a DPOPS instrument whose size distributions
+       were compared against a balloon sounding of the same air mass.</p>
+    <ul class="tight">
+      <li>Measured in-flight turbulence intensity of about 19% at steady cruise. A ground wind-tunnel test on the manufactured inlet, with the probe at the
+          flight station, reproduced it (17 to 23%), showing the turbulence is a real flow feature and not an instrument artifact.</li>
+      <li>Built the flight data-reduction pipeline in MATLAB, and calibrated the Teensy 4.1 flight electronics against a laboratory reference chain.</li>
+      <li>Verified that 5 Hz flight sampling preserves mean velocity and turbulence intensity, while being clear that it cannot support spectra.</li>
+    </ul>
+    <p class="note">Detailed flight results are in preparation for publication, so figures are not shown here. I am happy to discuss them directly.</p>
+  </div>
+
+  <!-- IIT -->
+  <div class="panel" id="p-iit" role="tabpanel" aria-labelledby="t-iit" hidden>
+    <span class="tag">Prototype design</span><span class="tag">GD&amp;T</span><span class="tag">Field testing</span>
+    <h3>Optical dust-emission monitoring system, IIT Madras (2019 to 2021)</h3>
+    <p>As a Project Associate in the EnERG Lab, I led the design, build and testing of two prototypes of an optical dust-emission monitoring system, from
+       concept to finished hardware. Production drawings followed ASME GD&amp;T practice in Autodesk Inventor, and the prototype was field-tested at India's largest
+       thermal power plant. I also analyzed isokinetic gravimetric sampling data with time-series signal processing in MATLAB and LabVIEW.</p>
+  </div>
+</section>
+
+<section id="ai">
+  <h2>How I use AI in research</h2>
+  <p class="sub">AI is part of my daily workflow, used with judgment rather than trust.</p>
+  <div class="cards">
+    <div class="card"><h3>Speed</h3><p>AI coding tools (Claude Code, Codex, Claude Cowork) accelerate analysis pipelines, instrument software and figure generation.</p></div>
+    <div class="card"><h3>Judgment</h3><p>The tools produce plenty of ideas and plausible answers. I decide what makes sense using fundamental physics and independent measurements.</p></div>
+    <div class="card"><h3>Limits</h3><p>I know where these tools help, where they fail, and how to structure the work so errors get caught before they reach a result.</p></div>
+  </div>
+</section>
+
+<section id="pubs">
+  <h2>Publications and honors</h2>
+  <ol class="pubs">
+    <li>Ouimette, J., Arnott, W. P., Laven, P., Whitwell, R., <b>Radhakrishnan, N.</b>, Dhaniyala, S., … Volckens, J. (2024).
+        Fundamentals of low-cost aerosol sensor design and operation. <i>Aerosol Science and Technology</i>, 58(1), 1–15.
+        <a href="https://doi.org/10.1080/02786826.2023.2285935">doi:10.1080/02786826.2023.2285935</a></li>
+    <li><b>Radhakrishnan, N.</b>, Dhaniyala, S. Nested Inlet for Sampling Stratospheric Aerosol (NISSA): Design, development, and evaluation.
+        <i>To be submitted to Atmospheric Measurement Techniques, November 2026.</i></li>
+    <li><b>Radhakrishnan, N.</b>, Dhaniyala, S. In-flight turbulence, pressure, and velocity measurements in a nested aircraft inlet for stratospheric aerosol sampling. <i>In preparation.</i></li>
+    <li><b>Radhakrishnan, N.</b>, Dhaniyala, S. Stratospheric aerosol sampling from high-altitude aircraft: In-flight measurements and machine learning analysis of particle transport efficiency. <i>In preparation.</i></li>
+  </ol>
+  <p>Honors: Best Student Oral Platform Presentation, AAAR (2025); Best Student Poster, AAAR (2022); Best Graduate Oral Presentation and 3rd place project pitch, Clarkson RAPS (2025).
+     NISSA's flights were featured by the NOAA Climate Program Office and Clarkson University.</p>
+</section>
+
+<section id="contact">
+  <h2>Contact</h2>
+  <p class="sub">Looking for research scientist, postdoctoral and R&amp;D engineering roles in atmospheric instrumentation, aerospace flow measurement and CFD.</p>
+  <div class="btns">
+    <a class="btn primary" href="mailto:radhakn@clarkson.edu">Email me</a>
+    <a class="btn" href="https://github.com/nagarajan1295">GitHub</a>
+  </div>
+</section>
+
+</main>
+
+<footer><div class="wrap">Figures are from conference presentations and published work. Unpublished flight results are withheld. © 2026 Nagarajan Radhakrishnan.</div></footer>
+
+<div id="lb" role="dialog" aria-label="Enlarged figure"><img alt=""></div>
+
+<script>
+  // tabs
+  const tabs=[...document.querySelectorAll('.tab')];
+  function show(tab){
+    tabs.forEach(t=>{const on=t===tab;t.setAttribute('aria-selected',on);
+      document.getElementById(t.getAttribute('aria-controls')).hidden=!on;});
+    try{history.replaceState(null,'','#'+tab.id)}catch(e){}
+  }
+  tabs.forEach(t=>t.addEventListener('click',()=>show(t)));
+  tabs.forEach((t,i)=>t.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+      const n=tabs[(i+(e.key==='ArrowRight'?1:tabs.length-1))%tabs.length];n.focus();show(n);}}));
+  const start=tabs.find(t=>('#'+t.id)===location.hash); if(start) show(start);
+
+  // chip switchers
+  function wire(groupId,imgId,capId){
+    const g=document.getElementById(groupId),img=document.getElementById(imgId),cap=document.getElementById(capId);
+    g.addEventListener('click',e=>{
+      const b=e.target.closest('.chip'); if(!b) return;
+      g.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',c===b));
+      img.src=b.dataset.img; cap.textContent=b.dataset.cap;
+    });
+  }
+  wire('contourChips','contourImg','contourCap'); wire('paChips','paImg','paCap');
+
+  // lightbox
+  const lb=document.getElementById('lb'),lbi=lb.querySelector('img');
+  document.addEventListener('click',e=>{
+    const im=e.target.closest('figure img');
+    if(im){lbi.src=im.src;lbi.alt=im.alt;lb.classList.add('on');}
+    else if(lb.classList.contains('on')) lb.classList.remove('on');
+  });
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')lb.classList.remove('on')});
+</script>
+</body>
+</html>
