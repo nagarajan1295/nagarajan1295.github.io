@@ -1,0 +1,258 @@
+<section id="work">
+  <h2>Projects</h2>
+  <p class="sub">Select a project. Each one has a short menu to jump straight to a topic. Click any figure to enlarge it.</p>
+
+  <div class="tabs" role="tablist" aria-label="Projects">
+    <button class="tab" data-tc="1" role="tab" id="t-nissa" aria-controls="p-nissa" aria-selected="true">NISSA aircraft inlet (CFD)</button>
+    <button class="tab" data-tc="2" role="tab" id="t-pa" aria-controls="p-pa" aria-selected="false">PurpleAir sensor aspiration (CFD)</button>
+    <button class="tab" data-tc="3" role="tab" id="t-flight" aria-controls="p-flight" aria-selected="false">Wind-tunnel and flight measurements</button>
+    <button class="tab" data-tc="4" role="tab" id="t-box" aria-controls="p-box" aria-selected="false">Electronics</button>
+  </div>
+
+  <!-- ================= NISSA ================= -->
+  <div class="panel" data-tc="1" id="p-nissa" role="tabpanel" aria-labelledby="t-nissa">
+    <span class="tag">ANSYS Fluent</span><span class="tag">RANS k-ω SST / k-ε</span><span class="tag">Parametric design</span><span class="tag">NASA WB-57</span>
+    <div class="jump" role="group" aria-label="Jump to a topic in this project">
+      <span>Jump to:</span>
+      <a href="#nissa-design">Design and hardware</a>
+      <a href="#nissa-setup">Simulation setup</a>
+      <a href="#explorer">Interactive: tube size</a>
+      <a href="#nissa-results">Results</a>
+    </div>
+    <div class="two">
+      <div>
+        <h3>NISSA: Nested Inlet for Sampling Stratospheric Aerosol</h3>
+        <p>To sample aerosol from a fast aircraft, the inlet has to slow the air down, and slowing air down can create turbulence that
+           knocks particles out of the sample. NISSA is a nested design built to avoid that.</p>
+        <ul class="tight">
+          <li><b>Outer section</b> shrouds the sample so the flow is unaffected by the aircraft's angle of attack.</li>
+          <li><b>Middle section</b> samples isokinetically and slows the flow without adding turbulence.</li>
+          <li><b>Final section</b> sub-samples the slowed flow and turns it into the aircraft plumbing.</li>
+        </ul>
+        <p>The geometry came out of a parametric CFD study (2D and 3D, near-wall resolution y⁺ ≤ 1, k-ω SST and k-ε). The inlet was then manufactured and flown on the WB-57.</p>
+      </div>
+      <figure><img src="assets/nissa_hardware.webp" alt="Manufactured NISSA inlet, machined aluminum with curved sample line" loading="lazy">
+        <figcaption><b>The finished hardware.</b> The manufactured inlet: machined aluminum nose and nested sections, with the curved sample line that carries air to the instruments.</figcaption></figure>
+    </div>
+    <div class="facts">
+      <div class="fact"><b>Mach 0.7</b><span>design condition: about 0.25 atm, 17 to 18 km altitude</span></div>
+      <div class="fact"><b>7 flights</b><span>on NASA's WB-57 during the SABRE 2025 test campaign</span></div>
+      <div class="fact"><b>10 nm to 10 µm</b><span>particle size range the inlet is designed to sample</span></div>
+    </div>
+
+    <h4 id="nissa-design">Design and hardware</h4>
+    <p class="group-note">What the inlet looks like, on the bench and on the aircraft.</p>
+    <div class="grid">
+      <figure><img src="assets/nissa_wb57.webp" alt="NISSA mounted under the WB-57 aircraft" loading="lazy">
+        <figcaption><b>On the aircraft.</b> The WB-57 on the ramp (left) and the inlet's mounting location under the airframe (right). Position matters because the inlet samples the air the aircraft itself disturbs.</figcaption></figure>
+      <figure><img src="assets/nissa_section.webp" alt="3D cross-section of NISSA" loading="lazy">
+        <figcaption><b>Cross-section.</b> The three nested stages seen from the side: outer shroud, expansion section, and the final sub-sample line that bends toward the aircraft plumbing.</figcaption></figure>
+    </div>
+
+    <h4 id="nissa-setup">Simulation setup</h4>
+    <p class="group-note">How the flow is resolved before any results are trusted.</p>
+    <div class="grid">
+      <figure><img src="assets/nissa_mesh.webp" alt="Refined 3D mesh around the inlet" loading="lazy">
+        <figcaption><b>The computational mesh.</b> Millions of tiny cells packed close to the walls (y⁺ ≤ 1) so the thin layer of slow air next to the surface is captured. Turbulence predictions are only as good as this layer.</figcaption></figure>
+      <figure><img src="assets/nissa_expansion.webp" alt="Velocity magnitude for two expansion angles" loading="lazy">
+        <figcaption><b>Comparing expansion angles.</b> Air speed through two designs (2.3° on top, 3.3° below). The angle of the expansion section controls how quickly the air slows, a key design lever.</figcaption></figure>
+    </div>
+
+    <div class="widget" id="explorer">
+      <h3>Interactive: change the sampling-tube size and watch the turbulence move</h3>
+      <p class="hint"><b>How to read this:</b> the inlet was simulated with three sampling-tube sizes: 3, 7 and 11 mm. Drag the slider (it snaps to each simulated case) or tap a size.
+         Color in the picture is turbulence intensity along the inlet; the graph shows turbulence along the centerline, straight from the simulation data.
+         A larger tube moves the turbulence peak further downstream and lowers it, which is how the design keeps the sampled air calm.</p>
+      <div class="chips" id="sizeChips">
+        <button class="chip" data-d="3" aria-pressed="false">3 mm</button>
+        <button class="chip" data-d="7" aria-pressed="false">7 mm</button>
+        <button class="chip" data-d="11" aria-pressed="false">11 mm</button>
+        <button class="chip play" id="playBtn" type="button">&#9654; Play sweep</button>
+      </div>
+
+      <div class="stage" id="stage" aria-label="Turbulence intensity contour along the inlet">
+        <img id="L3"  src="assets/strip_3.webp"  alt="" >
+        <img id="L7"  src="assets/strip_7.webp"  alt="" style="opacity:0">
+        <img id="L11" src="assets/strip_11.webp" alt="" style="opacity:0">
+        <div class="peakline" id="peakline"></div>
+        <div class="peaktag" id="peaktag">peak</div>
+      </div>
+      <div class="legend"><span>Low turbulence</span><i></i><span>High turbulence</span><span style="margin-left:auto">Flow runs left to right, 0 to 0.3 m</span></div>
+
+      <div class="viz">
+        <svg class="chart" id="chart" viewBox="0 0 680 300" role="img" aria-label="Centerline turbulence intensity versus axial length for the 3, 7 and 11 mm cases"></svg>
+        <div class="readout">
+          <div><b id="rDia">3.0 mm</b><span>sampling-tube diameter</span></div>
+          <div><b id="rPeak">6.8 %</b><span>peak centerline turbulence intensity</span></div>
+          <div><b id="rPos">0.045 m</b><span>peak position along the inlet</span></div>
+          <div><b id="rFlow">7.8 LPM</b><span id="rFlowNote">sampling flow rate (simulated case)</span></div>
+        </div>
+      </div>
+
+      <div class="control pulse" id="control">
+        <div class="label">&#8596; Drag the slider to change the tube size <span>or use the arrow keys</span></div>
+        <div class="track">
+          <div class="bubble" id="bubble">3.0 mm</div>
+          <input type="range" id="sizeRange" min="3" max="11" step="0.01" value="3" aria-label="Sampling tube diameter in millimeters">
+        </div>
+        <div class="ticks" id="ticks"></div>
+      </div>
+      <p class="note" id="status" style="margin:12px 0 0" aria-live="polite">Simulated case: 3 mm, 7.8 LPM.</p>
+    </div>
+
+    <h4 id="nissa-results">Results</h4>
+    <p class="group-note">What the simulations show about the air and the particles inside the inlet.</p>
+    <div class="grid">
+      <figure><img src="assets/nissa_ti3d.webp" alt="3D turbulence intensity contour" loading="lazy">
+        <figcaption><b>Turbulence in 3D.</b> Color shows turbulence intensity through the nested inlet: blue is calm, warmer colors are more turbulent. The aim is a calm core where the sample is drawn.</figcaption></figure>
+      <figure><img src="assets/nissa_tracks.webp" alt="Particle trajectories through the nested inlet" loading="lazy">
+        <figcaption><b>Particle paths.</b> Simulated particle trajectories through the nested inlet.</figcaption></figure>
+    </div>
+  </div>
+
+  <!-- ================= PurpleAir ================= -->
+  <div class="panel" data-tc="2" id="p-pa" role="tabpanel" aria-labelledby="t-pa" hidden>
+    <span class="tag">ANSYS Fluent</span><span class="tag">Discrete random walk</span><span class="tag">Low-cost sensors</span>
+    <div class="jump" role="group" aria-label="Jump to a topic in this project">
+      <span>Jump to:</span>
+      <a href="#pa-sensor">The sensor</a>
+      <a href="#pa-model">Model and particle tracks</a>
+      <a href="#pa-results">Efficiency results</a>
+      <a href="#pa-compare">Compare with correlations</a>
+      <a href="#pa-pressure">Pressure</a>
+    </div>
+    <div class="two" id="pa-sensor">
+      <div>
+        <h3>Aspiration efficiency of the PurpleAir PA-II-Flex</h3>
+        <p>Low-cost sensors such as the Plantower PMS5003 report PM1, PM2.5 and PM10, but the housing around them decides which
+           particles actually reach the sensor. I modeled the PA-II-Flex enclosure in 3D and computed how many particles of each size make it
+           through at five wind speeds (0.4, 3, 5, 10 and 20 m/s), with and without turbulent dispersion.</p>
+        <ul class="tight">
+          <li>3D model of the housing and sensor slit, k-ε and k-ω SST turbulence models, Fluent discrete random walk particle tracking.</li>
+          <li>Results compared against classical sampling correlations; they do not capture the flow entering this enclosure.</li>
+          <li>Presented at AAAR, with field-data validation as the next step.</li>
+        </ul>
+      </div>
+      <figure><img src="assets/pa_hardware.webp" alt="PurpleAir PA-II-Flex opened to show the two sensors" loading="lazy" style="max-width:240px">
+        <figcaption><b>The sensor.</b> The PA-II-Flex opened to show the pair of Plantower sensors inside its housing.</figcaption></figure>
+    </div>
+
+    <h4 id="pa-model">How it was modeled</h4>
+    <p class="group-note">The 3D model, then the paths particles take around and into the housing.</p>
+    <div class="grid small">
+      <figure><img src="assets/pa_geometry.webp" alt="3D model of the housing" loading="lazy">
+        <figcaption><b>The 3D model.</b> Housing and sensor slits as built for the simulation.</figcaption></figure>
+      <figure><img src="assets/pa_tracks_side.webp" alt="Particle tracks around the housing, side view" loading="lazy">
+        <figcaption><b>Particle tracks, side view.</b> Each line is one particle's path past the housing.</figcaption></figure>
+      <figure><img src="assets/pa_tracks_top.webp" alt="Particle tracks around the housing, top view" loading="lazy">
+        <figcaption><b>Particle tracks, top view.</b> The same simulation from above.</figcaption></figure>
+      <figure><img src="assets/pa_tracks_cut.webp" alt="Particle tracks entering the housing" loading="lazy">
+        <figcaption><b>Entering the enclosure.</b> The particles that reach the opening, the ones the sensor can count.</figcaption></figure>
+    </div>
+
+    <h4 id="pa-results">Efficiency results</h4>
+    <div class="two" style="margin-top:12px">
+      <figure><img src="assets/pa_results.webp" alt="Percent of particles crossing versus particle diameter at five wind speeds" loading="lazy">
+        <figcaption><b>Particles reaching the sensor.</b> Share of particles that cross into the housing against particle diameter, at five wind speeds. Larger particles and stronger winds mean fewer particles make it in, so coarse-particle readings can be biased low.</figcaption></figure>
+      <div class="widget" id="pa-compare" style="margin-top:0">
+        <h3>Interactive: my CFD against published correlations</h3>
+        <p class="hint"><b>How to read this:</b> each curve is the fraction of particles that make it into the sensor against particle size (as Stokes number). Curves that fall off earlier mean the housing loses more particles. Switch the overlay to compare with classical correlations.</p>
+        <div class="chips" id="paChips">
+          <button class="chip" data-img="assets/pa_stokes.webp"     data-cap="CFD results only, at five wind speeds." aria-pressed="true">CFD only</button>
+          <button class="chip" data-img="assets/pa_vs_davis.webp"   data-cap="CFD with the Davis and Subari correlation (0.4 m/s) overlaid." aria-pressed="false">+ Davis and Subari</button>
+          <button class="chip" data-img="assets/pa_vs_hangal.webp"  data-cap="CFD with the Hangal and Willeke correlation overlaid." aria-pressed="false">+ Hangal and Willeke</button>
+          <button class="chip" data-img="assets/pa_vs_durham.webp"  data-cap="CFD with the Durham and Lundgren correlation overlaid." aria-pressed="false">+ Durham and Lundgren</button>
+        </div>
+        <figure><img id="paImg" src="assets/pa_stokes.webp" alt="Particles crossing versus square root of Stokes number"><figcaption id="paCap">CFD results only, at five wind speeds.</figcaption></figure>
+      </div>
+    </div>
+
+    <h4 id="pa-pressure">Pressure</h4>
+    <div class="grid small">
+      <figure><img src="assets/pa_pressure.webp" alt="Static pressure contour on the sensor plane" loading="lazy">
+        <figcaption><b>Pressure on the sensor plane.</b> Static pressure across the plane where the sensors sit, the pressure field their fans work in.</figcaption></figure>
+      <figure><img src="assets/pa_dp.webp" alt="Pressure drop versus wind speed" loading="lazy">
+        <figcaption><b>Pressure drop.</b> Pressure change across the enclosure at 0.4, 3 and 5 m/s: it grows with wind speed.</figcaption></figure>
+    </div>
+  </div>
+
+  <!-- ================= Wind tunnel & flight ================= -->
+  <div class="panel" data-tc="3" id="p-flight" role="tabpanel" aria-labelledby="t-flight" hidden>
+    <span class="tag">Hot-wire anemometry</span><span class="tag">Wind tunnel</span><span class="tag">Flight testing</span><span class="tag">MATLAB</span>
+    <div class="jump" role="group" aria-label="Jump to a topic in this project">
+      <span>Jump to:</span>
+      <a href="#fl-flight">Flight measurements</a>
+      <a href="#fl-tunnel">In the wind tunnel</a>
+    </div>
+    <h3 id="fl-flight">Measuring what actually happens inside the inlet</h3>
+    <p>CFD only matters if the real inlet behaves the way the model says. NISSA flew seven research flights on the WB-57 during the SABRE 2025
+       test campaign, with a miniature hot-wire, absolute and differential pressure taps, and a DPOPS instrument whose size distributions
+       were compared against a balloon sounding of the same air mass.</p>
+    <ul class="tight">
+      <li>Measured in-flight turbulence intensity of about 19% at steady cruise. A ground wind-tunnel test on the manufactured inlet, with the probe at the
+          flight station, reproduced it (17 to 23%), showing the turbulence is a real flow feature and not an instrument artifact.</li>
+      <li>Built the flight data-reduction pipeline in MATLAB, and calibrated the Teensy 4.1 flight electronics against a laboratory reference chain.</li>
+      <li>Verified that 5 Hz flight sampling preserves mean velocity and turbulence intensity, while being clear that it cannot support spectra.</li>
+    </ul>
+    <h4 id="fl-tunnel">In the wind tunnel</h4>
+    <p class="group-note">Ground tests in Clarkson's wind tunnel give a controlled check on what the flight sensors saw.</p>
+    <div class="grid tall">
+      <figure><img src="assets/wt_nissa.webp" alt="Manufactured NISSA inlet mounted in the wind tunnel" loading="lazy">
+        <figcaption><b>The real inlet in the tunnel.</b> The manufactured NISSA inlet on its stand, with the hot-wire probe fitted at the same station used in flight and its lead running out the back.</figcaption></figure>
+      <figure><img src="assets/wt_cone.webp" alt="Test model on a support frame in the wind tunnel" loading="lazy">
+        <figcaption><b>A second test article.</b> A conical test model on a support frame in the tunnel, with pressure tubing routed out, used to check the flow and pressure measurements.</figcaption></figure>
+    </div>
+    <p class="note">Detailed flight results are in preparation for publication, so flight plots are not shown here. I am happy to discuss them directly.</p>
+  </div>
+
+  <!-- ================= Electronics ================= -->
+  <div class="panel" data-tc="4" id="p-box" role="tabpanel" aria-labelledby="t-box" hidden>
+    <span class="tag">Embedded systems</span><span class="tag">Analog and digital electronics</span><span class="tag">Microcontrollers</span><span class="tag">Optics</span>
+    <div class="jump" role="group" aria-label="Jump to a topic in this project">
+      <span>Jump to:</span>
+      <a href="#el-flight">Flight control box (WB-57)</a>
+      <a href="#el-lidust">LiDust emission monitor (IIT Madras)</a>
+    </div>
+
+    <div class="two" id="el-flight">
+      <div>
+        <h3>The flight control and data box</h3>
+        <p>For the WB-57 test flights I built the electronics that ran the hot-wire and pressure measurements. The box has to be reliable, safe to fly,
+           and accurate enough that the numbers it logs can be trusted at altitude.</p>
+        <ul class="tight">
+          <li><b>Teensy 4.1</b> microcontroller reading the sensors and logging to storage.</li>
+          <li><b>LattePanda</b> single-board computer with a USB hub for control and data handling.</li>
+          <li><b>ADC</b> for the analog signals, including the output of the <b>hot-wire mini-CTA</b> and its wiring.</li>
+          <li>Power-conditioning boards, a solid-state relay and fuses to run it all from aircraft power.</li>
+        </ul>
+        <p>I calibrated the box against a laboratory reference chain and wrote the MATLAB pipeline that turns its raw logs into velocity and turbulence intensity.</p>
+      </div>
+      <figure><img src="assets/flight_box.webp" alt="Inside the flight control box, showing the Teensy, LattePanda, power boards and wiring" loading="lazy">
+        <figcaption><b>Inside the box.</b> Microcontroller and computer along the bottom, power boards across the middle, and the sensor connectors and fan along the top.</figcaption></figure>
+    </div>
+
+    <div class="two" id="el-lidust" style="margin-top:44px">
+      <div>
+        <h3>LiDust: an optical dust-emission monitor for industrial stacks</h3>
+        <p>As a Project Associate in the EnERG Lab at IIT Madras (2019 to 2021), I led the design, build and testing of two prototypes of an optical
+           dust-emission monitor, working from concept to finished hardware with a team of engineers and technicians. I was in charge of designing the optical
+           system, a laser with a beam splitter and detector, together with its electronics. The label on the prototype sums up the idea:
+           when other sensors lie, trust an independent optical measurement.</p>
+        <ul class="tight">
+          <li>Production drawings to ASME GD&amp;T practice in Autodesk Inventor.</li>
+          <li>Field test of the prototype at India's largest thermal power plant (NTPC Vindhyachal).</li>
+          <li>Analyzed isokinetic gravimetric sampling data with time-series signal processing in MATLAB and LabVIEW, the reference the optical method was checked against.</li>
+        </ul>
+      </div>
+      <figure><img src="assets/lidust_prototype.webp" alt="The LiDust prototype, a green enclosure with a mounting flange" loading="lazy" style="max-width:340px">
+        <figcaption><b>The finished prototype.</b> Rugged enclosure with latches, and a flange with studs for mounting to the stack.</figcaption></figure>
+    </div>
+    <div class="grid tall small-tall">
+      <figure><img src="assets/lidust_internals.webp" alt="Side view of the LiDust internals" loading="lazy">
+        <figcaption><b>Side view.</b> Laser and detector optics on the upper plate, a Raspberry Pi 4 for data acquisition, signal-conditioning electronics, and the power supply.</figcaption></figure>
+      <figure><img src="assets/lidust_optics.webp" alt="Top view of the LiDust optical bench" loading="lazy">
+        <figcaption><b>Top view.</b> The optical bench: green laser, collection optics and detector, and the boards that condition the signal.</figcaption></figure>
+    </div>
+  </div>
+</section>
+

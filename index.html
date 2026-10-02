@@ -209,6 +209,22 @@
     .widget p.note{order:4}
     .control .label span{display:none} .control .label{margin-bottom:34px} .legend span:last-child{display:none}
   }
+  /* photo, jump menus, small figure grids */
+  .hero-grid{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center}
+  img.me{width:172px;height:172px;border-radius:50%;object-fit:cover;border:4px solid var(--surface);box-shadow:var(--shadow)}
+  .jump{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:14px 0 24px}
+  .jump span{color:var(--muted);font-size:var(--fs-sm);margin-right:4px}
+  .jump a{font-size:var(--fs-sm);text-decoration:none;padding:5px 14px;border-radius:999px;color:var(--text);background:var(--surface);
+          border:1px solid color-mix(in srgb,var(--tc) 55%,var(--line));transition:background .15s}
+  .jump a:hover{background:color-mix(in srgb,var(--tc) 14%,var(--surface))}
+  [id]{scroll-margin-top:84px}
+  .grid.small{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+  .grid.small-tall{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));max-width:780px}
+  svg.chart .cv{fill:none;stroke-linejoin:round;transition:opacity .2s,stroke-width .2s}
+  @media (max-width:700px){
+    .hero-grid{grid-template-columns:1fr;gap:20px}
+    img.me{order:-1;width:104px;height:104px}
+  }
 </style>
 <script>
   /* apply a saved theme choice before first paint (falls back to the system setting) */
@@ -226,7 +242,9 @@
 <main class="wrap">
 
 <header class="hero" id="about">
-  <div class="eyebrow">Mechanical engineer &middot; aerosol science and measurement</div>
+  <div class="hero-grid">
+    <div class="hero-text">
+<div class="eyebrow">Mechanical engineer &middot; aerosol science and measurement</div>
   <h1>Nagarajan Radhakrishnan</h1>
   <p class="lead">I work on measuring aerosols and airflow. My work covers CFD simulation, design and manufacturing of the hardware, wind-tunnel and flight testing,
      and processing the data, including hot-wire measurements that verify what the flow is doing inside the instrument. I am a Ph.D. candidate in
@@ -249,23 +267,32 @@
       </div>
     </details>
   </div>
+    </div>
+    <img class="me" src="assets/me.webp" width="420" height="420" alt="Nagarajan Radhakrishnan at work in the WB-57 operations room">
+  </div>
 </header>
 
 <section id="work">
   <h2>Projects</h2>
-  <p class="sub">Select a project. Click any figure to enlarge it.</p>
+  <p class="sub">Select a project. Each one has a short menu to jump straight to a topic. Click any figure to enlarge it.</p>
 
   <div class="tabs" role="tablist" aria-label="Projects">
     <button class="tab" data-tc="1" role="tab" id="t-nissa" aria-controls="p-nissa" aria-selected="true">NISSA aircraft inlet (CFD)</button>
     <button class="tab" data-tc="2" role="tab" id="t-pa" aria-controls="p-pa" aria-selected="false">PurpleAir sensor aspiration (CFD)</button>
     <button class="tab" data-tc="3" role="tab" id="t-flight" aria-controls="p-flight" aria-selected="false">Wind-tunnel and flight measurements</button>
-    <button class="tab" data-tc="4" role="tab" id="t-box" aria-controls="p-box" aria-selected="false">Flight electronics</button>
-    <button class="tab" data-tc="2" role="tab" id="t-iit" aria-controls="p-iit" aria-selected="false">LiDust emission monitor (IIT Madras)</button>
+    <button class="tab" data-tc="4" role="tab" id="t-box" aria-controls="p-box" aria-selected="false">Electronics</button>
   </div>
 
   <!-- ================= NISSA ================= -->
   <div class="panel" data-tc="1" id="p-nissa" role="tabpanel" aria-labelledby="t-nissa">
     <span class="tag">ANSYS Fluent</span><span class="tag">RANS k-ω SST / k-ε</span><span class="tag">Parametric design</span><span class="tag">NASA WB-57</span>
+    <div class="jump" role="group" aria-label="Jump to a topic in this project">
+      <span>Jump to:</span>
+      <a href="#nissa-design">Design and hardware</a>
+      <a href="#nissa-setup">Simulation setup</a>
+      <a href="#explorer">Interactive: tube size</a>
+      <a href="#nissa-results">Results</a>
+    </div>
     <div class="two">
       <div>
         <h3>NISSA: Nested Inlet for Sampling Stratospheric Aerosol</h3>
@@ -287,11 +314,29 @@
       <div class="fact"><b>10 nm to 10 µm</b><span>particle size range the inlet is designed to sample</span></div>
     </div>
 
+    <h4 id="nissa-design">Design and hardware</h4>
+    <p class="group-note">What the inlet looks like, on the bench and on the aircraft.</p>
+    <div class="grid">
+      <figure><img src="assets/nissa_wb57.webp" alt="NISSA mounted under the WB-57 aircraft" loading="lazy">
+        <figcaption><b>On the aircraft.</b> The WB-57 on the ramp (left) and the inlet's mounting location under the airframe (right). Position matters because the inlet samples the air the aircraft itself disturbs.</figcaption></figure>
+      <figure><img src="assets/nissa_section.webp" alt="3D cross-section of NISSA" loading="lazy">
+        <figcaption><b>Cross-section.</b> The three nested stages seen from the side: outer shroud, expansion section, and the final sub-sample line that bends toward the aircraft plumbing.</figcaption></figure>
+    </div>
+
+    <h4 id="nissa-setup">Simulation setup</h4>
+    <p class="group-note">How the flow is resolved before any results are trusted.</p>
+    <div class="grid">
+      <figure><img src="assets/nissa_mesh.webp" alt="Refined 3D mesh around the inlet" loading="lazy">
+        <figcaption><b>The computational mesh.</b> Millions of tiny cells packed close to the walls (y⁺ ≤ 1) so the thin layer of slow air next to the surface is captured. Turbulence predictions are only as good as this layer.</figcaption></figure>
+      <figure><img src="assets/nissa_expansion.webp" alt="Velocity magnitude for two expansion angles" loading="lazy">
+        <figcaption><b>Comparing expansion angles.</b> Air speed through two designs (2.3° on top, 3.3° below). The angle of the expansion section controls how quickly the air slows, a key design lever.</figcaption></figure>
+    </div>
+
     <div class="widget" id="explorer">
       <h3>Interactive: change the sampling-tube size and watch the turbulence move</h3>
-      <p class="hint"><b>How to read this:</b> the inlet is simulated at three sampling-tube sizes. Drag the slider (or tap 3, 7 or 11 mm). Color in the picture is
-         turbulence intensity along the inlet; the graph below shows turbulence along the centerline. A larger tube moves the turbulence peak further
-         downstream and lowers it, which is how the design keeps the sampled air calm.</p>
+      <p class="hint"><b>How to read this:</b> the inlet was simulated with three sampling-tube sizes: 3, 7 and 11 mm. Drag the slider (it snaps to each simulated case) or tap a size.
+         Color in the picture is turbulence intensity along the inlet; the graph shows turbulence along the centerline, straight from the simulation data.
+         A larger tube moves the turbulence peak further downstream and lowers it, which is how the design keeps the sampled air calm.</p>
       <div class="chips" id="sizeChips">
         <button class="chip" data-d="3" aria-pressed="false">3 mm</button>
         <button class="chip" data-d="7" aria-pressed="false">7 mm</button>
@@ -309,15 +354,15 @@
       <div class="legend"><span>Low turbulence</span><i></i><span>High turbulence</span><span style="margin-left:auto">Flow runs left to right, 0 to 0.3 m</span></div>
 
       <div class="viz">
-      <svg class="chart" id="chart" viewBox="0 0 680 300" role="img" aria-label="Centerline turbulence intensity versus axial length"></svg>
-      <div class="readout">
-        <div><b id="rDia">3.0 mm</b><span>sampling-tube diameter</span></div>
-        <div><b id="rPeak">6.8 %</b><span>peak centerline turbulence intensity</span></div>
-        <div><b id="rPos">0.045 m</b><span>peak position along the inlet</span></div>
-        <div><b id="rFlow">7.8 LPM</b><span id="rFlowNote">sampling flow rate (simulated case)</span></div>
+        <svg class="chart" id="chart" viewBox="0 0 680 300" role="img" aria-label="Centerline turbulence intensity versus axial length for the 3, 7 and 11 mm cases"></svg>
+        <div class="readout">
+          <div><b id="rDia">3.0 mm</b><span>sampling-tube diameter</span></div>
+          <div><b id="rPeak">6.8 %</b><span>peak centerline turbulence intensity</span></div>
+          <div><b id="rPos">0.045 m</b><span>peak position along the inlet</span></div>
+          <div><b id="rFlow">7.8 LPM</b><span id="rFlowNote">sampling flow rate (simulated case)</span></div>
+        </div>
       </div>
 
-      </div>
       <div class="control pulse" id="control">
         <div class="label">&#8596; Drag the slider to change the tube size <span>or use the arrow keys</span></div>
         <div class="track">
@@ -326,29 +371,10 @@
         </div>
         <div class="ticks" id="ticks"></div>
       </div>
-
-      <p class="note" style="margin:10px 0 0">Faint lines are the three simulated cases (3, 7 and 11 mm). Between them, the bold curve and the picture are smoothly interpolated as a visual guide, not new simulations.</p>
+      <p class="note" id="status" style="margin:12px 0 0" aria-live="polite">Simulated case: 3 mm, 7.8 LPM.</p>
     </div>
 
-    <h4>Design and hardware</h4>
-    <p class="group-note">What the inlet looks like, on the bench and on the aircraft.</p>
-    <div class="grid">
-      <figure><img src="assets/nissa_wb57.webp" alt="NISSA mounted under the WB-57 aircraft" loading="lazy">
-        <figcaption><b>On the aircraft.</b> The WB-57 on the ramp (left) and the inlet's mounting location under the airframe (right). Position matters because the inlet samples the air the aircraft itself disturbs.</figcaption></figure>
-      <figure><img src="assets/nissa_section.webp" alt="3D cross-section of NISSA" loading="lazy">
-        <figcaption><b>Cross-section.</b> The three nested stages seen from the side: outer shroud, expansion section, and the final sub-sample line that bends toward the aircraft plumbing.</figcaption></figure>
-    </div>
-
-    <h4>Simulation setup</h4>
-    <p class="group-note">How the flow is resolved before any results are trusted.</p>
-    <div class="grid">
-      <figure><img src="assets/nissa_mesh.webp" alt="Refined 3D mesh around the inlet" loading="lazy">
-        <figcaption><b>The computational mesh.</b> Millions of tiny cells packed close to the walls (y⁺ ≤ 1) so the thin layer of slow air next to the surface is captured. Turbulence predictions are only as good as this layer.</figcaption></figure>
-      <figure><img src="assets/nissa_expansion.webp" alt="Velocity magnitude for two expansion angles" loading="lazy">
-        <figcaption><b>Comparing expansion angles.</b> Air speed through two designs (2.3° on top, 3.3° below). The angle of the expansion section controls how quickly the air slows, a key design lever.</figcaption></figure>
-    </div>
-
-    <h4>Results</h4>
+    <h4 id="nissa-results">Results</h4>
     <p class="group-note">What the simulations show about the air and the particles inside the inlet.</p>
     <div class="grid">
       <figure><img src="assets/nissa_ti3d.webp" alt="3D turbulence intensity contour" loading="lazy">
@@ -361,7 +387,15 @@
   <!-- ================= PurpleAir ================= -->
   <div class="panel" data-tc="2" id="p-pa" role="tabpanel" aria-labelledby="t-pa" hidden>
     <span class="tag">ANSYS Fluent</span><span class="tag">Discrete random walk</span><span class="tag">Low-cost sensors</span>
-    <div class="two">
+    <div class="jump" role="group" aria-label="Jump to a topic in this project">
+      <span>Jump to:</span>
+      <a href="#pa-sensor">The sensor</a>
+      <a href="#pa-model">Model and particle tracks</a>
+      <a href="#pa-results">Efficiency results</a>
+      <a href="#pa-compare">Compare with correlations</a>
+      <a href="#pa-pressure">Pressure</a>
+    </div>
+    <div class="two" id="pa-sensor">
       <div>
         <h3>Aspiration efficiency of the PurpleAir PA-II-Flex</h3>
         <p>Low-cost sensors such as the Plantower PMS5003 report PM1, PM2.5 and PM10, but the housing around them decides which
@@ -373,40 +407,42 @@
           <li>Presented at AAAR, with field-data validation as the next step.</li>
         </ul>
       </div>
-      <figure><img src="assets/pa_hardware.webp" alt="PurpleAir PA-II-Flex opened to show the two sensors" loading="lazy" style="max-width:340px">
+      <figure><img src="assets/pa_hardware.webp" alt="PurpleAir PA-II-Flex opened to show the two sensors" loading="lazy" style="max-width:240px">
         <figcaption><b>The sensor.</b> The PA-II-Flex opened to show the pair of Plantower sensors inside its housing.</figcaption></figure>
     </div>
 
-    <div class="widget">
-      <h3>Interactive: my CFD against published correlations</h3>
-      <p class="hint"><b>How to read this:</b> each curve is the fraction of particles that make it into the sensor, plotted against particle size (as Stokes number). Curves
-         that fall off earlier mean the housing loses more particles. Switch the overlay to compare my CFD with classical textbook correlations.</p>
-      <div class="chips" id="paChips">
-        <button class="chip" data-img="assets/pa_stokes.webp"     data-cap="CFD results only, at five wind speeds." aria-pressed="true">CFD only</button>
-        <button class="chip" data-img="assets/pa_vs_davis.webp"   data-cap="CFD with the Davis and Subari correlation (0.4 m/s) overlaid." aria-pressed="false">+ Davis and Subari</button>
-        <button class="chip" data-img="assets/pa_vs_hangal.webp"  data-cap="CFD with the Hangal and Willeke correlation overlaid." aria-pressed="false">+ Hangal and Willeke</button>
-        <button class="chip" data-img="assets/pa_vs_durham.webp"  data-cap="CFD with the Durham and Lundgren correlation overlaid." aria-pressed="false">+ Durham and Lundgren</button>
-      </div>
-      <figure><img id="paImg" src="assets/pa_stokes.webp" alt="Particles crossing versus square root of Stokes number"><figcaption id="paCap">CFD results only, at five wind speeds.</figcaption></figure>
-    </div>
-
-    <h4>Model and particle behavior</h4>
-    <p class="group-note">The geometry that was simulated and how particles move around and into it.</p>
-    <div class="grid">
+    <h4 id="pa-model">How it was modeled</h4>
+    <p class="group-note">The 3D model, then the paths particles take around and into the housing.</p>
+    <div class="grid small">
       <figure><img src="assets/pa_geometry.webp" alt="3D model of the housing" loading="lazy">
-        <figcaption><b>The 3D model.</b> The housing and sensor slits as built in the simulation, ready for meshing.</figcaption></figure>
+        <figcaption><b>The 3D model.</b> Housing and sensor slits as built for the simulation.</figcaption></figure>
       <figure><img src="assets/pa_tracks_side.webp" alt="Particle tracks around the housing, side view" loading="lazy">
-        <figcaption><b>Particle tracks, side view.</b> Each line is one particle's path as wind carries it past the housing.</figcaption></figure>
+        <figcaption><b>Particle tracks, side view.</b> Each line is one particle's path past the housing.</figcaption></figure>
       <figure><img src="assets/pa_tracks_top.webp" alt="Particle tracks around the housing, top view" loading="lazy">
-        <figcaption><b>Particle tracks, top view.</b> The same simulation from above, showing how particles swing around the enclosure.</figcaption></figure>
+        <figcaption><b>Particle tracks, top view.</b> The same simulation from above.</figcaption></figure>
       <figure><img src="assets/pa_tracks_cut.webp" alt="Particle tracks entering the housing" loading="lazy">
-        <figcaption><b>Entering the enclosure.</b> Close-up of the particles that reach the opening, the ones the sensor can actually count.</figcaption></figure>
+        <figcaption><b>Entering the enclosure.</b> The particles that reach the opening, the ones the sensor can count.</figcaption></figure>
     </div>
 
-    <h4>Results</h4>
-    <div class="grid">
+    <h4 id="pa-results">Efficiency results</h4>
+    <div class="two" style="margin-top:12px">
       <figure><img src="assets/pa_results.webp" alt="Percent of particles crossing versus particle diameter at five wind speeds" loading="lazy">
         <figcaption><b>Particles reaching the sensor.</b> Share of particles that cross into the housing against particle diameter, at five wind speeds. Larger particles and stronger winds mean fewer particles make it in, so coarse-particle readings can be biased low.</figcaption></figure>
+      <div class="widget" id="pa-compare" style="margin-top:0">
+        <h3>Interactive: my CFD against published correlations</h3>
+        <p class="hint"><b>How to read this:</b> each curve is the fraction of particles that make it into the sensor against particle size (as Stokes number). Curves that fall off earlier mean the housing loses more particles. Switch the overlay to compare with classical correlations.</p>
+        <div class="chips" id="paChips">
+          <button class="chip" data-img="assets/pa_stokes.webp"     data-cap="CFD results only, at five wind speeds." aria-pressed="true">CFD only</button>
+          <button class="chip" data-img="assets/pa_vs_davis.webp"   data-cap="CFD with the Davis and Subari correlation (0.4 m/s) overlaid." aria-pressed="false">+ Davis and Subari</button>
+          <button class="chip" data-img="assets/pa_vs_hangal.webp"  data-cap="CFD with the Hangal and Willeke correlation overlaid." aria-pressed="false">+ Hangal and Willeke</button>
+          <button class="chip" data-img="assets/pa_vs_durham.webp"  data-cap="CFD with the Durham and Lundgren correlation overlaid." aria-pressed="false">+ Durham and Lundgren</button>
+        </div>
+        <figure><img id="paImg" src="assets/pa_stokes.webp" alt="Particles crossing versus square root of Stokes number"><figcaption id="paCap">CFD results only, at five wind speeds.</figcaption></figure>
+      </div>
+    </div>
+
+    <h4 id="pa-pressure">Pressure</h4>
+    <div class="grid small">
       <figure><img src="assets/pa_pressure.webp" alt="Static pressure contour on the sensor plane" loading="lazy">
         <figcaption><b>Pressure on the sensor plane.</b> Static pressure across the plane where the sensors sit, the pressure field their fans work in.</figcaption></figure>
       <figure><img src="assets/pa_dp.webp" alt="Pressure drop versus wind speed" loading="lazy">
@@ -417,7 +453,12 @@
   <!-- ================= Wind tunnel & flight ================= -->
   <div class="panel" data-tc="3" id="p-flight" role="tabpanel" aria-labelledby="t-flight" hidden>
     <span class="tag">Hot-wire anemometry</span><span class="tag">Wind tunnel</span><span class="tag">Flight testing</span><span class="tag">MATLAB</span>
-    <h3>Measuring what actually happens inside the inlet</h3>
+    <div class="jump" role="group" aria-label="Jump to a topic in this project">
+      <span>Jump to:</span>
+      <a href="#fl-flight">Flight measurements</a>
+      <a href="#fl-tunnel">In the wind tunnel</a>
+    </div>
+    <h3 id="fl-flight">Measuring what actually happens inside the inlet</h3>
     <p>CFD only matters if the real inlet behaves the way the model says. NISSA flew seven research flights on the WB-57 during the SABRE 2025
        test campaign, with a miniature hot-wire, absolute and differential pressure taps, and a DPOPS instrument whose size distributions
        were compared against a balloon sounding of the same air mass.</p>
@@ -427,7 +468,7 @@
       <li>Built the flight data-reduction pipeline in MATLAB, and calibrated the Teensy 4.1 flight electronics against a laboratory reference chain.</li>
       <li>Verified that 5 Hz flight sampling preserves mean velocity and turbulence intensity, while being clear that it cannot support spectra.</li>
     </ul>
-    <h4>In the wind tunnel</h4>
+    <h4 id="fl-tunnel">In the wind tunnel</h4>
     <p class="group-note">Ground tests in Clarkson's wind tunnel give a controlled check on what the flight sensors saw.</p>
     <div class="grid tall">
       <figure><img src="assets/wt_nissa.webp" alt="Manufactured NISSA inlet mounted in the wind tunnel" loading="lazy">
@@ -438,10 +479,16 @@
     <p class="note">Detailed flight results are in preparation for publication, so flight plots are not shown here. I am happy to discuss them directly.</p>
   </div>
 
-  <!-- ================= Flight electronics ================= -->
+  <!-- ================= Electronics ================= -->
   <div class="panel" data-tc="4" id="p-box" role="tabpanel" aria-labelledby="t-box" hidden>
-    <span class="tag">Embedded systems</span><span class="tag">Teensy 4.1</span><span class="tag">Hot-wire mini-CTA</span><span class="tag">Data acquisition</span>
-    <div class="two">
+    <span class="tag">Embedded systems</span><span class="tag">Analog and digital electronics</span><span class="tag">Microcontrollers</span><span class="tag">Optics</span>
+    <div class="jump" role="group" aria-label="Jump to a topic in this project">
+      <span>Jump to:</span>
+      <a href="#el-flight">Flight control box (WB-57)</a>
+      <a href="#el-lidust">LiDust emission monitor (IIT Madras)</a>
+    </div>
+
+    <div class="two" id="el-flight">
       <div>
         <h3>The flight control and data box</h3>
         <p>For the WB-57 test flights I built the electronics that ran the hot-wire and pressure measurements. The box has to be reliable, safe to fly,
@@ -457,16 +504,13 @@
       <figure><img src="assets/flight_box.webp" alt="Inside the flight control box, showing the Teensy, LattePanda, power boards and wiring" loading="lazy">
         <figcaption><b>Inside the box.</b> Microcontroller and computer along the bottom, power boards across the middle, and the sensor connectors and fan along the top.</figcaption></figure>
     </div>
-  </div>
 
-  <!-- ================= LiDust ================= -->
-  <div class="panel" data-tc="2" id="p-iit" role="tabpanel" aria-labelledby="t-iit" hidden>
-    <span class="tag">Prototype design</span><span class="tag">Optics</span><span class="tag">GD&amp;T</span><span class="tag">Field testing</span>
-    <div class="two">
+    <div class="two" id="el-lidust" style="margin-top:44px">
       <div>
         <h3>LiDust: an optical dust-emission monitor for industrial stacks</h3>
         <p>As a Project Associate in the EnERG Lab at IIT Madras (2019 to 2021), I led the design, build and testing of two prototypes of an optical
-           dust-emission monitor, working from concept to finished hardware with a team of engineers and technicians. The label on the prototype sums up the idea:
+           dust-emission monitor, working from concept to finished hardware with a team of engineers and technicians. I was in charge of designing the optical
+           system, a laser with a beam splitter and detector,. The label on the prototype sums up the idea:
            when other sensors lie, trust an independent optical measurement.</p>
         <ul class="tight">
           <li>Production drawings to ASME GD&amp;T practice in Autodesk Inventor.</li>
@@ -474,12 +518,10 @@
           <li>Analyzed isokinetic gravimetric sampling data with time-series signal processing in MATLAB and LabVIEW, the reference the optical method was checked against.</li>
         </ul>
       </div>
-      <figure><img src="assets/lidust_prototype.webp" alt="The LiDust prototype, a green enclosure with a mounting flange" loading="lazy" style="max-width:380px">
+      <figure><img src="assets/lidust_prototype.webp" alt="The LiDust prototype, a green enclosure with a mounting flange" loading="lazy" style="max-width:340px">
         <figcaption><b>The finished prototype.</b> Rugged enclosure with latches, and a flange with studs for mounting to the stack.</figcaption></figure>
     </div>
-    <h4>Inside the instrument</h4>
-    <p class="group-note">A laser and detector measure the dust; a small computer and custom boards turn the signal into data.</p>
-    <div class="grid tall">
+    <div class="grid tall small-tall">
       <figure><img src="assets/lidust_internals.webp" alt="Side view of the LiDust internals" loading="lazy">
         <figcaption><b>Side view.</b> Laser and detector optics on the upper plate, a Raspberry Pi 4 for data acquisition, signal-conditioning electronics, and the power supply.</figcaption></figure>
       <figure><img src="assets/lidust_optics.webp" alt="Top view of the LiDust optical bench" loading="lazy">
@@ -526,7 +568,7 @@
 <div id="lb" role="dialog" aria-label="Enlarged figure"><img alt=""></div>
 
 <script>
-const CURVES = {"3":{"x":[0.0006,0.0016,0.0026,0.0036,0.0046,0.0056,0.0066,0.0076,0.0086,0.0096,0.0106,0.0116,0.0126,0.0136,0.0146,0.0156,0.0166,0.0176,0.0186,0.0196,0.0206,0.0216,0.0226,0.0236,0.0246,0.0256,0.0266,0.0276,0.0286,0.0296,0.0306,0.0316,0.0326,0.0336,0.0346,0.0356,0.0366,0.0376,0.0386,0.0396,0.0406,0.0416,0.0426,0.0436,0.0446,0.0456,0.0466,0.0476,0.0486,0.0496,0.0506,0.0516,0.0526,0.0536,0.0546,0.0556,0.0566,0.0576,0.0586,0.0596,0.0606,0.0616,0.0626,0.0636,0.0646,0.0656,0.0666,0.0676,0.0686,0.0696,0.0706,0.0716,0.0726,0.0736,0.0746,0.0756,0.0765,0.0775,0.0785,0.0795,0.0805,0.0815,0.0825,0.0835,0.0845,0.0855,0.0865,0.0875,0.0885,0.0895,0.0905,0.0915,0.0925,0.0935,0.0945,0.0955,0.0965,0.0975,0.0985,0.0995,0.1005,0.1015,0.1025,0.1035,0.1045,0.1055,0.1065,0.1075,0.1085,0.1095,0.1105,0.1115,0.1125,0.1135,0.1145,0.1155,0.1165,0.1175,0.1185,0.1195,0.1205,0.1215,0.1225,0.1235,0.1245,0.1255,0.1265,0.1275,0.1285,0.1295,0.1305,0.1315,0.1325,0.1335,0.1345,0.1355,0.1365,0.1375,0.1385,0.1395,0.1405,0.1415,0.1425,0.1435,0.1445,0.1455,0.1465,0.1475,0.1485,0.1495,0.1505,0.1515,0.1525,0.1535,0.1545,0.1555,0.1565,0.1575,0.1585,0.1595,0.1605,0.1615,0.1625,0.1635,0.1645,0.1655,0.1665,0.1675,0.1685,0.1695,0.1705,0.1715,0.1725,0.1735,0.1745,0.1755,0.1765,0.1775,0.1785,0.1795,0.1805,0.1815,0.1825,0.1835,0.1845,0.1855,0.1865,0.1875,0.1885,0.1895,0.1905,0.1915,0.1925,0.1935,0.1945,0.1955,0.1965,0.1975,0.1985,0.1995,0.2005,0.2015,0.2025,0.2035,0.2045,0.2055,0.2065,0.2075,0.2085,0.2095,0.2105,0.2115,0.2125,0.2135,0.2145,0.2155,0.2165,0.2175,0.2185,0.2195,0.2205,0.2215,0.2225,0.2235,0.2244,0.2254,0.2264,0.2274,0.2284,0.2294,0.2304,0.2314,0.2324,0.2334,0.2344,0.2354,0.2364,0.2374,0.2384,0.2394,0.2404,0.2414,0.2424,0.2434,0.2444,0.2454,0.2464,0.2474,0.2484,0.2494,0.2504,0.2514,0.2524,0.2534,0.2544,0.2554,0.2564,0.2574,0.2584,0.2594,0.2604,0.2614,0.2624,0.2634,0.2644,0.2654,0.2664,0.2674,0.2684,0.2694,0.2704,0.2714,0.2724,0.2734,0.2744,0.2754,0.2764,0.2774,0.2784,0.2794,0.2804,0.2814,0.2824,0.2834,0.2844,0.2854,0.2864,0.2874,0.2884,0.2894,0.2904,0.2914,0.2924,0.2934,0.2944,0.2954,0.2964,0.2974,0.2984,0.2994],"y":[1.3,1.28,1.25,1.24,1.23,1.22,1.2,1.19,1.18,1.17,1.17,1.16,1.14,1.13,1.11,1.1,1.08,1.06,1.05,1.04,1.03,1.03,1.02,1.01,0.99,0.99,0.99,1.0,1.02,1.1,1.19,1.37,1.68,2.09,2.65,3.35,4.16,4.83,5.41,5.85,6.22,6.46,6.64,6.73,6.79,6.8,6.76,6.71,6.61,6.49,6.35,6.22,6.06,5.9,5.73,5.56,5.39,5.23,5.06,4.89,4.73,4.58,4.44,4.28,4.13,4.01,3.89,3.76,3.63,3.52,3.41,3.31,3.2,3.1,3.02,2.93,2.85,2.76,2.68,2.62,2.56,2.48,2.42,2.35,2.3,2.24,2.18,2.13,2.08,2.04,1.99,1.96,1.91,1.86,1.82,1.78,1.74,1.71,1.67,1.64,1.61,1.57,1.55,1.52,1.49,1.46,1.43,1.41,1.39,1.36,1.35,1.32,1.31,1.28,1.25,1.23,1.22,1.2,1.18,1.17,1.15,1.13,1.11,1.1,1.09,1.07,1.06,1.04,1.03,1.01,1.0,0.99,0.98,0.96,0.95,0.95,0.93,0.92,0.9,0.89,0.89,0.88,0.87,0.86,0.85,0.84,0.83,0.82,0.81,0.8,0.8,0.79,0.78,0.77,0.76,0.76,0.75,0.75,0.74,0.73,0.73,0.72,0.71,0.7,0.69,0.69,0.68,0.68,0.67,0.66,0.66,0.66,0.65,0.65,0.64,0.64,0.63,0.63,0.62,0.62,0.61,0.61,0.6,0.6,0.59,0.59,0.58,0.57,0.57,0.56,0.56,0.55,0.55,0.55,0.55,0.54,0.54,0.54,0.53,0.52,0.52,0.52,0.52,0.51,0.51,0.5,0.5,0.5,0.49,0.49,0.49,0.48,0.48,0.48,0.48,0.47,0.46,0.46,0.46,0.46,0.45,0.45,0.45,0.45,0.44,0.44,0.44,0.43,0.43,0.43,0.42,0.42,0.42,0.41,0.41,0.41,0.41,0.41,0.4,0.4,0.39,0.39,0.39,0.39,0.39,0.38,0.38,0.38,0.37,0.37,0.37,0.37,0.37,0.36,0.36,0.36,0.35,0.35,0.35,0.35,0.35,0.35,0.35,0.35,0.34,0.34,0.34,0.34,0.34,0.34,0.33,0.33,0.33,0.32,0.32,0.32,0.32,0.32,0.31,0.31,0.31,0.31,0.3,0.3,0.3,0.3,0.3,0.29,0.29,0.29,0.28,0.28,0.28,0.28,0.28,0.28,0.28,0.28,0.27,0.27]},"7":{"x":[0.0006,0.0016,0.0026,0.0036,0.0046,0.0056,0.0066,0.0076,0.0086,0.0096,0.0106,0.0116,0.0126,0.0136,0.0146,0.0156,0.0166,0.0176,0.0186,0.0196,0.0206,0.0216,0.0226,0.0236,0.0246,0.0256,0.0266,0.0276,0.0286,0.0296,0.0306,0.0316,0.0326,0.0336,0.0346,0.0356,0.0366,0.0376,0.0386,0.0396,0.0406,0.0416,0.0426,0.0436,0.0446,0.0456,0.0466,0.0476,0.0486,0.0496,0.0506,0.0516,0.0526,0.0536,0.0546,0.0556,0.0566,0.0576,0.0586,0.0596,0.0606,0.0616,0.0626,0.0636,0.0646,0.0656,0.0666,0.0676,0.0686,0.0696,0.0706,0.0716,0.0726,0.0736,0.0746,0.0756,0.0765,0.0775,0.0785,0.0795,0.0805,0.0815,0.0825,0.0835,0.0845,0.0855,0.0865,0.0875,0.0885,0.0895,0.0905,0.0915,0.0925,0.0935,0.0945,0.0955,0.0965,0.0975,0.0985,0.0995,0.1005,0.1015,0.1025,0.1035,0.1045,0.1055,0.1065,0.1075,0.1085,0.1095,0.1105,0.1115,0.1125,0.1135,0.1145,0.1155,0.1165,0.1175,0.1185,0.1195,0.1205,0.1215,0.1225,0.1235,0.1245,0.1255,0.1265,0.1275,0.1285,0.1295,0.1305,0.1315,0.1325,0.1335,0.1345,0.1355,0.1365,0.1375,0.1385,0.1395,0.1405,0.1415,0.1425,0.1435,0.1445,0.1455,0.1465,0.1475,0.1485,0.1495,0.1505,0.1515,0.1525,0.1535,0.1545,0.1555,0.1565,0.1575,0.1585,0.1595,0.1605,0.1615,0.1625,0.1635,0.1645,0.1655,0.1665,0.1675,0.1685,0.1695,0.1705,0.1715,0.1725,0.1735,0.1745,0.1755,0.1765,0.1775,0.1785,0.1795,0.1805,0.1815,0.1825,0.1835,0.1845,0.1855,0.1865,0.1875,0.1885,0.1895,0.1905,0.1915,0.1925,0.1935,0.1945,0.1955,0.1965,0.1975,0.1985,0.1995,0.2005,0.2015,0.2025,0.2035,0.2045,0.2055,0.2065,0.2075,0.2085,0.2095,0.2105,0.2115,0.2125,0.2135,0.2145,0.2155,0.2165,0.2175,0.2185,0.2195,0.2205,0.2215,0.2225,0.2235,0.2244,0.2254,0.2264,0.2274,0.2284,0.2294,0.2304,0.2314,0.2324,0.2334,0.2344,0.2354,0.2364,0.2374,0.2384,0.2394,0.2404,0.2414,0.2424,0.2434,0.2444,0.2454,0.2464,0.2474,0.2484,0.2494,0.2504,0.2514,0.2524,0.2534,0.2544,0.2554,0.2564,0.2574,0.2584,0.2594,0.2604,0.2614,0.2624,0.2634,0.2644,0.2654,0.2664,0.2674,0.2684,0.2694,0.2704,0.2714,0.2724,0.2734,0.2744,0.2754,0.2764,0.2774,0.2784,0.2794,0.2804,0.2814,0.2824,0.2834,0.2844,0.2854,0.2864,0.2874,0.2884,0.2894,0.2904,0.2914,0.2924,0.2934,0.2944,0.2954,0.2964,0.2974,0.2984,0.2994],"y":[1.12,1.12,1.12,1.12,1.12,1.13,1.12,1.12,1.12,1.12,1.12,1.13,1.13,1.13,1.13,1.13,1.13,1.13,1.13,1.13,1.13,1.13,1.12,1.11,1.11,1.11,1.11,1.11,1.1,1.1,1.09,1.09,1.08,1.08,1.07,1.07,1.07,1.06,1.06,1.05,1.05,1.04,1.04,1.03,1.03,1.02,1.02,1.02,1.01,1.0,1.0,1.0,1.0,1.0,0.99,0.99,0.98,0.98,0.98,0.97,0.97,0.97,0.97,0.97,0.96,0.95,0.95,0.95,0.95,0.95,0.95,0.95,0.95,0.94,0.94,0.94,0.94,0.94,0.95,0.95,0.97,1.01,1.04,1.05,1.09,1.14,1.21,1.28,1.37,1.47,1.62,1.8,1.96,2.15,2.38,2.64,2.89,3.15,3.38,3.64,3.88,4.09,4.26,4.43,4.59,4.72,4.83,4.92,5.01,5.08,5.14,5.19,5.24,5.28,5.31,5.33,5.35,5.36,5.36,5.36,5.35,5.35,5.34,5.32,5.31,5.28,5.25,5.23,5.19,5.15,5.12,5.07,5.03,4.99,4.94,4.89,4.83,4.79,4.74,4.69,4.64,4.59,4.53,4.48,4.44,4.38,4.32,4.27,4.22,4.18,4.12,4.06,4.01,3.97,3.91,3.86,3.82,3.76,3.72,3.66,3.61,3.57,3.53,3.47,3.43,3.39,3.34,3.3,3.26,3.21,3.19,3.14,3.08,3.05,3.01,2.97,2.93,2.9,2.87,2.83,2.79,2.76,2.72,2.69,2.66,2.63,2.59,2.56,2.53,2.5,2.47,2.45,2.42,2.39,2.36,2.32,2.29,2.28,2.25,2.22,2.2,2.18,2.15,2.13,2.11,2.08,2.05,2.03,2.02,2.0,1.98,1.95,1.93,1.91,1.89,1.87,1.85,1.84,1.81,1.8,1.78,1.76,1.75,1.73,1.72,1.69,1.68,1.67,1.65,1.64,1.62,1.61,1.59,1.58,1.56,1.55,1.53,1.52,1.5,1.49,1.48,1.47,1.45,1.45,1.43,1.42,1.4,1.39,1.38,1.37,1.36,1.35,1.34,1.33,1.32,1.31,1.3,1.29,1.28,1.27,1.25,1.25,1.24,1.23,1.23,1.21,1.21,1.2,1.19,1.18,1.17,1.17,1.16,1.15,1.15,1.14,1.13,1.12,1.11,1.1,1.1,1.09,1.08,1.08,1.07,1.06,1.05,1.05,1.05,1.04,1.04,1.03,1.02,1.01,1.01,1.0,0.99,0.98,0.98,0.98]},"11":{"x":[0.0006,0.0015,0.0025,0.0034,0.0043,0.0053,0.0062,0.0071,0.008,0.009,0.0099,0.0108,0.0118,0.0127,0.0136,0.0146,0.0155,0.0164,0.0174,0.0183,0.0192,0.0202,0.0211,0.022,0.0229,0.0239,0.0248,0.0257,0.0267,0.0276,0.0285,0.0295,0.0304,0.0313,0.0323,0.0332,0.0341,0.035,0.036,0.0369,0.0378,0.0388,0.0397,0.0406,0.0416,0.0425,0.0434,0.0444,0.0453,0.0462,0.0471,0.0481,0.049,0.0499,0.0509,0.0518,0.0527,0.0537,0.0546,0.0555,0.0565,0.0574,0.0583,0.0593,0.0602,0.0611,0.062,0.063,0.0639,0.0648,0.0658,0.0667,0.0676,0.0686,0.0695,0.0704,0.0714,0.0723,0.0732,0.0741,0.0751,0.076,0.0769,0.0779,0.0788,0.0797,0.0807,0.0816,0.0825,0.0835,0.0844,0.0853,0.0862,0.0872,0.0881,0.089,0.09,0.0909,0.0918,0.0928,0.0937,0.0946,0.0956,0.0965,0.0974,0.0984,0.0993,0.1002,0.1011,0.1021,0.103,0.1039,0.1049,0.1058,0.1067,0.1077,0.1086,0.1095,0.1105,0.1114,0.1123,0.1132,0.1142,0.1151,0.116,0.117,0.1179,0.1188,0.1198,0.1207,0.1216,0.1226,0.1235,0.1244,0.1253,0.1263,0.1272,0.1281,0.1291,0.13,0.1309,0.1319,0.1328,0.1337,0.1347,0.1356,0.1365,0.1375,0.1384,0.1393,0.1402,0.1412,0.1421,0.143,0.144,0.1449,0.1458,0.1468,0.1477,0.1486,0.1496,0.1505,0.1514,0.1523,0.1533,0.1542,0.1551,0.1561,0.157,0.1579,0.1589,0.1598,0.1607,0.1617,0.1626,0.1635,0.1644,0.1654,0.1663,0.1672,0.1682,0.1691,0.17,0.171,0.1719,0.1728,0.1738,0.1747,0.1756,0.1766,0.1775,0.1784,0.1793,0.1803,0.1812,0.1821,0.1831,0.184,0.1849,0.1859,0.1868,0.1877,0.1887,0.1896,0.1905,0.1914,0.1924,0.1933,0.1942,0.1952,0.1961,0.197,0.198,0.1989,0.1998,0.2008,0.2017,0.2026,0.2036,0.2045,0.2054,0.2063,0.2073,0.2082,0.2091,0.2101,0.211,0.2119,0.2129,0.2138,0.2147,0.2157,0.2166,0.2175,0.2184,0.2194,0.2203,0.2212,0.2222,0.2231,0.224,0.225,0.2259,0.2268,0.2278,0.2287,0.2296,0.2305,0.2315,0.2324,0.2333,0.2343,0.2352,0.2361,0.2371,0.238,0.2389,0.2399,0.2408,0.2417,0.2427,0.2436,0.2445,0.2454,0.2464,0.2473,0.2482,0.2492,0.2501,0.251,0.252,0.2529,0.2538,0.2548,0.2557,0.2566,0.2575,0.2585,0.2594,0.2603,0.2613,0.2622,0.2631,0.2641,0.265,0.2659,0.2669,0.2678,0.2687,0.2696,0.2706,0.2715,0.2724,0.2734,0.2743,0.2752,0.2762,0.2771,0.278,0.279],"y":[1.06,1.06,1.06,1.06,1.06,1.07,1.07,1.08,1.08,1.08,1.07,1.08,1.08,1.08,1.08,1.08,1.07,1.08,1.08,1.08,1.08,1.08,1.08,1.08,1.07,1.08,1.06,1.07,1.07,1.07,1.07,1.07,1.06,1.06,1.06,1.06,1.06,1.06,1.06,1.06,1.06,1.06,1.06,1.06,1.06,1.06,1.06,1.06,1.06,1.06,1.06,1.05,1.05,1.05,1.05,1.05,1.05,1.05,1.05,1.05,1.05,1.04,1.05,1.04,1.04,1.04,1.03,1.03,1.03,1.03,1.02,1.02,1.02,1.02,1.02,1.02,1.01,1.01,1.0,1.0,1.0,1.01,1.0,1.0,0.99,0.99,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.97,0.97,0.96,0.96,0.96,0.96,0.96,0.96,0.95,0.95,0.95,0.95,0.95,0.95,0.95,0.95,0.95,0.94,0.94,0.94,0.94,0.93,0.93,0.93,0.93,0.93,0.93,0.92,0.92,0.92,0.92,0.92,0.91,0.91,0.91,0.91,0.91,0.91,0.91,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.91,0.91,0.91,0.92,0.92,0.93,0.93,0.94,0.95,0.95,0.96,0.98,0.99,1.0,1.02,1.04,1.07,1.09,1.13,1.16,1.2,1.24,1.29,1.34,1.4,1.47,1.52,1.6,1.7,1.79,1.87,1.97,2.06,2.17,2.29,2.4,2.5,2.61,2.73,2.85,2.96,3.04,3.16,3.25,3.35,3.43,3.51,3.58,3.65,3.73,3.78,3.83,3.88,3.93,3.98,4.02,4.06,4.09,4.13,4.16,4.18,4.21,4.23,4.25,4.27,4.28,4.29,4.31,4.33,4.33,4.34,4.35,4.35,4.35,4.35,4.35,4.35,4.35,4.35,4.35,4.35,4.33,4.33,4.32,4.31,4.3,4.29,4.27,4.25,4.24,4.23,4.2,4.19,4.17,4.16,4.14,4.12,4.1,4.08,4.05,4.03,4.01,3.98,3.97,3.94,3.92,3.9,3.87,3.84,3.82,3.81,3.78,3.75,3.73,3.7,3.68,3.65,3.63,3.6,3.58,3.56,3.53,3.51,3.48,3.46,3.44,3.42,3.39,3.37,3.34,3.32,3.3,3.28,3.26,3.23,3.21,3.18,3.16,3.13,3.12,3.1,3.08,3.06,3.03,3.01,2.99,2.96,2.95,2.93,2.92,2.89,2.88,2.85,2.84,2.81,2.79,2.78,2.76]}};
+const CURVES = {"3":{"x":[0.0,0.0006,0.0012,0.0018,0.0024,0.00299,0.00359,0.00419,0.00479,0.00539,0.00599,0.00659,0.00719,0.00779,0.00838,0.00898,0.00958,0.01018,0.01078,0.01138,0.01198,0.01258,0.01318,0.01377,0.01437,0.01497,0.01557,0.01617,0.01677,0.01737,0.01797,0.01857,0.01916,0.01976,0.02036,0.02096,0.02156,0.02216,0.02276,0.02336,0.02396,0.02455,0.02515,0.02575,0.02635,0.02695,0.02755,0.02815,0.02875,0.02935,0.02994,0.03054,0.03114,0.03174,0.03234,0.03294,0.03354,0.03414,0.03474,0.03533,0.03593,0.03653,0.03713,0.03773,0.03833,0.03893,0.03953,0.04012,0.04072,0.04132,0.04192,0.04252,0.04312,0.04372,0.04432,0.04492,0.04512,0.04551,0.04611,0.04671,0.04731,0.04791,0.04851,0.04911,0.04971,0.05031,0.0509,0.0515,0.0521,0.0527,0.0533,0.0539,0.0545,0.0551,0.0557,0.05629,0.05689,0.05749,0.05809,0.05869,0.05929,0.05989,0.06049,0.06109,0.06168,0.06228,0.06288,0.06348,0.06408,0.06468,0.06528,0.06588,0.06648,0.06707,0.06767,0.06827,0.06887,0.06947,0.07007,0.07067,0.07127,0.07187,0.07246,0.07306,0.07366,0.07426,0.07486,0.07546,0.07606,0.07666,0.07726,0.07785,0.07845,0.07905,0.07965,0.08025,0.08085,0.08145,0.08205,0.08265,0.08324,0.08384,0.08444,0.08504,0.08564,0.08624,0.08684,0.08744,0.08804,0.08863,0.08923,0.08983,0.09043,0.09103,0.09163,0.09223,0.09283,0.09343,0.09402,0.09462,0.09522,0.09582,0.09642,0.09702,0.09762,0.09822,0.09882,0.09941,0.10001,0.10061,0.10121,0.10181,0.10241,0.10301,0.10361,0.10421,0.1048,0.1054,0.106,0.1066,0.1072,0.1078,0.1084,0.109,0.10959,0.11019,0.11079,0.11139,0.11199,0.11259,0.11319,0.11379,0.11439,0.11498,0.11558,0.11618,0.11678,0.11738,0.11798,0.11858,0.11918,0.11978,0.12037,0.12097,0.12157,0.12217,0.12277,0.12337,0.12397,0.12457,0.12517,0.12576,0.12636,0.12696,0.12756,0.12816,0.12876,0.12936,0.12996,0.13056,0.13115,0.13175,0.13235,0.13295,0.13355,0.13415,0.13475,0.13535,0.13595,0.13654,0.13714,0.13774,0.13834,0.13894,0.13954,0.14014,0.14074,0.14134,0.14193,0.14253,0.14313,0.14373,0.14433,0.14493,0.14553,0.14613,0.14673,0.14732,0.14792,0.14852,0.14912,0.14972,0.15032,0.15092,0.15152,0.15212,0.15271,0.15331,0.15391,0.15451,0.15511,0.15571,0.15631,0.15691,0.15751,0.1581,0.1587,0.1593,0.1599,0.1605,0.1611,0.1617,0.1623,0.1629,0.16349,0.16409,0.16469,0.16529,0.16589,0.16649,0.16709,0.16769,0.16829,0.16888,0.16948,0.17008,0.17068,0.17128,0.17188,0.17248,0.17308,0.17368,0.17427,0.17487,0.17547,0.17607,0.17667,0.17727,0.17787,0.17847,0.17907,0.17966,0.18026,0.18086,0.18146,0.18206,0.18266,0.18326,0.18386,0.18445,0.18505,0.18565,0.18625,0.18685,0.18745,0.18805,0.18865,0.18925,0.18984,0.19044,0.19104,0.19164,0.19224,0.19284,0.19344,0.19404,0.19464,0.19523,0.19583,0.19643,0.19703,0.19763,0.19823,0.19883,0.19943,0.20003,0.20062,0.20122,0.20182,0.20242,0.20302,0.20362,0.20422,0.20482,0.20542,0.20601,0.20661,0.20721,0.20781,0.20841,0.20901,0.20961,0.21021,0.21081,0.2114,0.212,0.2126,0.2132,0.2138,0.2144,0.215,0.2156,0.2162,0.21679,0.21739,0.21799,0.21859,0.21919,0.21979,0.22039,0.22099,0.22159,0.22218,0.22278,0.22338,0.22398,0.22458,0.22518,0.22578,0.22638,0.22698,0.22757,0.22817,0.22877,0.22937,0.22997,0.23057,0.23117,0.23177,0.23237,0.23296,0.23356,0.23416,0.23476,0.23536,0.23596,0.23656,0.23716,0.23776,0.23835,0.23895,0.23955,0.24015,0.24075,0.24135,0.24195,0.24255,0.24315,0.24374,0.24434,0.24494,0.24554,0.24614,0.24674,0.24734,0.24794,0.24854,0.24913,0.24973,0.25033,0.25093,0.25153,0.25213,0.25273,0.25333,0.25393,0.25452,0.25512,0.25572,0.25632,0.25692,0.25752,0.25812,0.25872,0.25931,0.25991,0.26051,0.26111,0.26171,0.26231,0.26291,0.26351,0.26411,0.2647,0.2653,0.2659,0.2665,0.2671,0.2677,0.2683,0.2689,0.2695,0.27009,0.27069,0.27129,0.27189,0.27249,0.27309,0.27369,0.27429,0.27489,0.27548,0.27608,0.27668,0.27728,0.27788,0.27848,0.27908,0.27968,0.28028,0.28087,0.28147,0.28207,0.28267,0.28327,0.28387,0.28447,0.28507,0.28567,0.28626,0.28686,0.28746,0.28806,0.28866,0.28926,0.28986,0.29046,0.29106,0.29165,0.29225,0.29285,0.29345,0.29405,0.29465,0.29525,0.29585,0.29645,0.29704,0.29764,0.29824,0.29884],"y":[1.316,1.325,1.301,1.282,1.267,1.256,1.246,1.237,1.229,1.222,1.215,1.207,1.2,1.193,1.186,1.179,1.172,1.165,1.158,1.151,1.144,1.137,1.13,1.122,1.115,1.108,1.101,1.094,1.087,1.08,1.073,1.066,1.059,1.052,1.045,1.039,1.032,1.025,1.019,1.013,1.007,1.001,0.996,0.992,0.989,0.99,0.993,1.001,1.015,1.039,1.077,1.132,1.215,1.328,1.479,1.681,1.936,2.246,2.609,3.023,3.474,3.938,4.392,4.817,5.198,5.526,5.801,6.03,6.22,6.374,6.499,6.598,6.674,6.73,6.768,6.789,6.794,6.794,6.785,6.764,6.73,6.684,6.629,6.565,6.493,6.414,6.33,6.241,6.149,6.054,5.956,5.857,5.756,5.655,5.553,5.451,5.35,5.249,5.149,5.049,4.951,4.854,4.758,4.664,4.572,4.481,4.392,4.305,4.22,4.136,4.055,3.975,3.898,3.822,3.747,3.676,3.605,3.537,3.47,3.405,3.342,3.28,3.221,3.162,3.105,3.05,2.996,2.944,2.893,2.843,2.795,2.748,2.702,2.657,2.614,2.572,2.53,2.49,2.451,2.413,2.376,2.339,2.304,2.27,2.236,2.203,2.171,2.14,2.11,2.08,2.051,2.022,1.995,1.968,1.942,1.916,1.89,1.866,1.842,1.818,1.795,1.773,1.751,1.729,1.708,1.687,1.667,1.648,1.628,1.609,1.591,1.573,1.555,1.537,1.52,1.504,1.487,1.471,1.455,1.44,1.425,1.41,1.395,1.381,1.367,1.353,1.34,1.326,1.313,1.301,1.288,1.276,1.264,1.252,1.24,1.229,1.217,1.206,1.195,1.185,1.174,1.164,1.154,1.144,1.134,1.124,1.115,1.105,1.096,1.087,1.078,1.069,1.061,1.052,1.044,1.036,1.028,1.02,1.012,1.004,0.996,0.989,0.982,0.974,0.967,0.96,0.953,0.946,0.939,0.933,0.926,0.92,0.913,0.907,0.901,0.895,0.889,0.883,0.877,0.871,0.865,0.86,0.854,0.848,0.843,0.838,0.832,0.827,0.822,0.817,0.812,0.807,0.802,0.797,0.792,0.787,0.783,0.778,0.773,0.769,0.764,0.76,0.756,0.751,0.747,0.743,0.739,0.735,0.73,0.726,0.722,0.718,0.715,0.711,0.707,0.703,0.699,0.695,0.692,0.688,0.685,0.681,0.677,0.674,0.67,0.667,0.664,0.66,0.657,0.654,0.65,0.647,0.644,0.641,0.637,0.634,0.631,0.628,0.625,0.622,0.619,0.616,0.613,0.61,0.607,0.604,0.602,0.599,0.596,0.593,0.59,0.588,0.585,0.582,0.58,0.577,0.574,0.572,0.569,0.566,0.564,0.561,0.559,0.556,0.554,0.551,0.549,0.547,0.544,0.542,0.539,0.537,0.535,0.532,0.53,0.528,0.525,0.523,0.521,0.519,0.516,0.514,0.512,0.51,0.508,0.505,0.503,0.501,0.499,0.497,0.495,0.493,0.491,0.489,0.487,0.485,0.483,0.481,0.479,0.477,0.475,0.473,0.471,0.469,0.467,0.465,0.463,0.461,0.459,0.457,0.456,0.454,0.452,0.45,0.448,0.446,0.445,0.443,0.441,0.439,0.438,0.436,0.434,0.432,0.431,0.429,0.427,0.425,0.424,0.422,0.42,0.419,0.417,0.416,0.414,0.412,0.411,0.409,0.407,0.406,0.404,0.403,0.401,0.4,0.398,0.396,0.395,0.393,0.392,0.39,0.389,0.387,0.386,0.384,0.383,0.381,0.38,0.379,0.377,0.376,0.374,0.373,0.371,0.37,0.369,0.367,0.366,0.364,0.363,0.362,0.36,0.359,0.358,0.356,0.355,0.354,0.352,0.351,0.35,0.348,0.347,0.346,0.344,0.343,0.342,0.341,0.339,0.338,0.337,0.336,0.334,0.333,0.332,0.331,0.329,0.328,0.327,0.326,0.325,0.323,0.322,0.321,0.32,0.319,0.318,0.317,0.315,0.314,0.313,0.312,0.311,0.31,0.309,0.307,0.306,0.305,0.304,0.303,0.302,0.301,0.3,0.299,0.298,0.297,0.296,0.294,0.293,0.292,0.291,0.29,0.289,0.288,0.287,0.286,0.285,0.284,0.283,0.282,0.281,0.28,0.279]},"7":{"x":[0.0,0.0006,0.0012,0.0018,0.0024,0.003,0.0036,0.0042,0.00479,0.00539,0.00599,0.00659,0.00719,0.00779,0.00839,0.00899,0.00959,0.01019,0.01079,0.01139,0.01199,0.01259,0.01319,0.01378,0.01438,0.01498,0.01558,0.01618,0.01678,0.01738,0.01798,0.01858,0.01918,0.01978,0.02038,0.02098,0.02158,0.02217,0.02277,0.02337,0.02397,0.02457,0.02517,0.02577,0.02637,0.02697,0.02757,0.02817,0.02877,0.02937,0.02997,0.03057,0.03116,0.03176,0.03236,0.03296,0.03356,0.03416,0.03476,0.03536,0.03596,0.03656,0.03716,0.03776,0.03836,0.03896,0.03956,0.04015,0.04075,0.04135,0.04195,0.04255,0.04315,0.04375,0.04435,0.04495,0.04555,0.04615,0.04675,0.04735,0.04795,0.04854,0.04914,0.04974,0.05034,0.05094,0.05154,0.05214,0.05274,0.05334,0.05394,0.05454,0.05514,0.05574,0.05634,0.05694,0.05753,0.05813,0.05873,0.05933,0.05993,0.06053,0.06113,0.06173,0.06233,0.06293,0.06353,0.06413,0.06473,0.06533,0.06593,0.06652,0.06712,0.06772,0.06832,0.06892,0.06952,0.07012,0.07072,0.07132,0.07192,0.07252,0.07312,0.07372,0.07432,0.07491,0.07551,0.07611,0.07671,0.07731,0.07791,0.07851,0.07911,0.07971,0.08031,0.08091,0.08151,0.08211,0.08271,0.08331,0.0839,0.0845,0.0851,0.0857,0.0863,0.0869,0.0875,0.0881,0.0887,0.0893,0.0899,0.0905,0.0911,0.0917,0.0923,0.09289,0.09349,0.09409,0.09469,0.09529,0.09589,0.09649,0.09709,0.09769,0.09829,0.09889,0.09949,0.10009,0.10069,0.10128,0.10188,0.10248,0.10308,0.10368,0.10428,0.10488,0.10548,0.10608,0.10668,0.10728,0.10788,0.10848,0.10908,0.10968,0.11027,0.11087,0.11147,0.11207,0.11267,0.11327,0.11387,0.11447,0.11507,0.11567,0.11627,0.11687,0.11747,0.11807,0.11867,0.11926,0.11934,0.11986,0.12046,0.12106,0.12166,0.12226,0.12286,0.12346,0.12406,0.12466,0.12526,0.12586,0.12646,0.12706,0.12765,0.12825,0.12885,0.12945,0.13005,0.13065,0.13125,0.13185,0.13245,0.13305,0.13365,0.13425,0.13485,0.13545,0.13605,0.13664,0.13724,0.13784,0.13844,0.13904,0.13964,0.14024,0.14084,0.14144,0.14204,0.14264,0.14324,0.14384,0.14444,0.14504,0.14563,0.14623,0.14683,0.14743,0.14803,0.14863,0.14923,0.14983,0.15043,0.15103,0.15163,0.15223,0.15283,0.15343,0.15402,0.15462,0.15522,0.15582,0.15642,0.15702,0.15762,0.15822,0.15882,0.15942,0.16002,0.16062,0.16122,0.16182,0.16242,0.16301,0.16361,0.16421,0.16481,0.16541,0.16601,0.16661,0.16721,0.16781,0.16841,0.16901,0.16961,0.17021,0.17081,0.17141,0.172,0.1726,0.1732,0.1738,0.1744,0.175,0.1756,0.1762,0.1768,0.1774,0.178,0.1786,0.1792,0.1798,0.18039,0.18099,0.18159,0.18219,0.18279,0.18339,0.18399,0.18459,0.18519,0.18579,0.18639,0.18699,0.18759,0.18819,0.18879,0.18938,0.18998,0.19058,0.19118,0.19178,0.19238,0.19298,0.19358,0.19418,0.19478,0.19538,0.19598,0.19658,0.19718,0.19778,0.19837,0.19897,0.19957,0.20017,0.20077,0.20137,0.20197,0.20257,0.20317,0.20377,0.20437,0.20497,0.20557,0.20617,0.20676,0.20736,0.20796,0.20856,0.20916,0.20976,0.21036,0.21096,0.21156,0.21216,0.21276,0.21336,0.21396,0.21456,0.21516,0.21575,0.21635,0.21695,0.21755,0.21815,0.21875,0.21935,0.21995,0.22055,0.22115,0.22175,0.22235,0.22295,0.22355,0.22415,0.22474,0.22534,0.22594,0.22654,0.22714,0.22774,0.22834,0.22894,0.22954,0.23014,0.23074,0.23134,0.23194,0.23254,0.23313,0.23373,0.23433,0.23493,0.23553,0.23613,0.23673,0.23733,0.23793,0.23853,0.23913,0.23973,0.24033,0.24093,0.24153,0.24212,0.24272,0.24332,0.24392,0.24452,0.24512,0.24572,0.24632,0.24692,0.24752,0.24812,0.24872,0.24932,0.24992,0.25052,0.25111,0.25171,0.25231,0.25291,0.25351,0.25411,0.25471,0.25531,0.25591,0.25651,0.25711,0.25771,0.25831,0.25891,0.2595,0.2601,0.2607,0.2613,0.2619,0.2625,0.2631,0.2637,0.2643,0.2649,0.2655,0.2661,0.2667,0.2673,0.2679,0.26849,0.26909,0.26969,0.27029,0.27089,0.27149,0.27209,0.27269,0.27329,0.27389,0.27449,0.27509,0.27569,0.27629,0.27689,0.27748,0.27808,0.27868,0.27928,0.27988,0.28048,0.28108,0.28168,0.28228,0.28288,0.28348,0.28408,0.28468,0.28528,0.28587,0.28647,0.28707,0.28767,0.28827,0.28887,0.28947,0.29007,0.29067,0.29127,0.29187,0.29247,0.29307,0.29367,0.29427,0.29486,0.29546,0.29606,0.29666,0.29726,0.29786,0.29846,0.29906],"y":[1.106,1.115,1.116,1.115,1.116,1.117,1.118,1.119,1.12,1.121,1.121,1.122,1.122,1.122,1.122,1.121,1.121,1.12,1.119,1.119,1.118,1.117,1.117,1.116,1.115,1.115,1.114,1.114,1.113,1.113,1.112,1.112,1.111,1.111,1.11,1.109,1.109,1.108,1.107,1.106,1.104,1.103,1.102,1.1,1.099,1.098,1.096,1.094,1.093,1.091,1.089,1.088,1.086,1.084,1.082,1.081,1.079,1.077,1.075,1.073,1.071,1.069,1.067,1.065,1.063,1.061,1.059,1.057,1.055,1.053,1.051,1.048,1.046,1.044,1.042,1.04,1.038,1.036,1.033,1.031,1.029,1.027,1.025,1.022,1.02,1.018,1.016,1.014,1.011,1.009,1.007,1.005,1.002,1.0,0.998,0.996,0.994,0.991,0.989,0.987,0.985,0.983,0.98,0.978,0.976,0.974,0.972,0.97,0.968,0.966,0.964,0.962,0.96,0.958,0.956,0.954,0.953,0.951,0.95,0.948,0.947,0.946,0.946,0.945,0.945,0.945,0.946,0.947,0.949,0.951,0.954,0.957,0.962,0.968,0.975,0.983,0.993,1.006,1.02,1.037,1.056,1.079,1.106,1.137,1.172,1.212,1.258,1.31,1.369,1.435,1.508,1.59,1.68,1.779,1.886,2.001,2.126,2.258,2.397,2.542,2.692,2.845,3.001,3.157,3.311,3.462,3.609,3.751,3.886,4.013,4.134,4.246,4.351,4.448,4.537,4.62,4.696,4.767,4.831,4.891,4.945,4.995,5.04,5.081,5.119,5.153,5.184,5.212,5.237,5.26,5.279,5.297,5.312,5.324,5.335,5.343,5.35,5.354,5.357,5.358,5.358,5.357,5.354,5.35,5.345,5.337,5.328,5.318,5.306,5.293,5.278,5.262,5.245,5.227,5.208,5.187,5.166,5.144,5.121,5.097,5.072,5.047,5.021,4.995,4.967,4.94,4.912,4.884,4.855,4.826,4.796,4.766,4.736,4.706,4.675,4.645,4.614,4.583,4.552,4.521,4.489,4.458,4.426,4.395,4.364,4.332,4.301,4.269,4.238,4.207,4.175,4.144,4.113,4.082,4.051,4.02,3.99,3.959,3.929,3.899,3.868,3.838,3.809,3.779,3.75,3.721,3.692,3.663,3.634,3.606,3.577,3.549,3.521,3.494,3.466,3.439,3.412,3.386,3.359,3.333,3.307,3.281,3.255,3.23,3.205,3.18,3.155,3.131,3.106,3.082,3.058,3.035,3.012,2.988,2.966,2.943,2.92,2.898,2.876,2.854,2.833,2.812,2.79,2.77,2.749,2.728,2.708,2.688,2.668,2.649,2.629,2.61,2.591,2.572,2.553,2.535,2.517,2.499,2.481,2.463,2.445,2.428,2.411,2.394,2.377,2.361,2.344,2.328,2.312,2.296,2.28,2.265,2.249,2.234,2.219,2.204,2.189,2.175,2.16,2.146,2.132,2.117,2.104,2.09,2.076,2.063,2.049,2.036,2.023,2.01,1.998,1.985,1.972,1.96,1.948,1.935,1.923,1.912,1.9,1.888,1.877,1.865,1.854,1.843,1.831,1.82,1.81,1.799,1.788,1.778,1.767,1.757,1.746,1.736,1.726,1.716,1.706,1.697,1.687,1.677,1.668,1.658,1.649,1.64,1.631,1.621,1.612,1.604,1.595,1.586,1.577,1.569,1.56,1.552,1.544,1.535,1.527,1.519,1.511,1.503,1.495,1.488,1.48,1.472,1.465,1.457,1.45,1.443,1.435,1.428,1.421,1.414,1.407,1.4,1.393,1.387,1.38,1.373,1.367,1.36,1.354,1.347,1.341,1.335,1.328,1.322,1.316,1.31,1.304,1.298,1.292,1.286,1.281,1.275,1.269,1.264,1.258,1.253,1.247,1.242,1.236,1.231,1.226,1.22,1.215,1.21,1.205,1.2,1.195,1.19,1.185,1.18,1.175,1.17,1.165,1.16,1.156,1.151,1.146,1.142,1.137,1.133,1.128,1.124,1.119,1.115,1.11,1.106,1.102,1.097,1.093,1.089,1.085,1.081,1.076,1.072,1.068,1.064,1.06,1.056,1.052,1.048,1.044,1.041,1.037,1.033,1.029,1.025,1.022,1.018,1.014,1.011,1.007,1.003,1.0,0.996,0.993,0.989,0.986,0.982,0.979]},"11":{"x":[0.0,0.00056,0.00112,0.00168,0.00224,0.0028,0.00336,0.00392,0.00448,0.00504,0.0056,0.00616,0.00672,0.00728,0.00784,0.00839,0.00895,0.00951,0.01007,0.01063,0.01119,0.01175,0.01231,0.01287,0.01343,0.01399,0.01455,0.01511,0.01567,0.01623,0.01679,0.01735,0.01791,0.01847,0.01903,0.01959,0.02015,0.02071,0.02127,0.02183,0.02239,0.02295,0.02351,0.02406,0.02462,0.02518,0.02574,0.0263,0.02686,0.02742,0.02798,0.02854,0.0291,0.02966,0.03022,0.03078,0.03134,0.0319,0.03246,0.03302,0.03358,0.03414,0.0347,0.03526,0.03582,0.03638,0.03694,0.0375,0.03806,0.03862,0.03918,0.03973,0.04029,0.04085,0.04141,0.04197,0.04253,0.04309,0.04365,0.04421,0.04477,0.04533,0.04589,0.04645,0.04701,0.04757,0.04813,0.04869,0.04925,0.04981,0.05037,0.05093,0.05149,0.05205,0.05261,0.05317,0.05373,0.05429,0.05485,0.05541,0.05596,0.05652,0.05708,0.05764,0.0582,0.05876,0.05932,0.05988,0.06044,0.061,0.06156,0.06212,0.06268,0.06324,0.0638,0.06436,0.06492,0.06548,0.06604,0.0666,0.06716,0.06772,0.06828,0.06884,0.0694,0.06996,0.07052,0.07108,0.07163,0.07219,0.07275,0.07331,0.07387,0.07443,0.07499,0.07555,0.07611,0.07667,0.07723,0.07779,0.07835,0.07891,0.07947,0.08003,0.08059,0.08115,0.08171,0.08227,0.08283,0.08339,0.08395,0.08451,0.08507,0.08563,0.08619,0.08675,0.0873,0.08786,0.08842,0.08898,0.08954,0.0901,0.09066,0.09122,0.09178,0.09234,0.0929,0.09346,0.09402,0.09458,0.09514,0.0957,0.09626,0.09682,0.09738,0.09794,0.0985,0.09906,0.09962,0.10018,0.10074,0.1013,0.10186,0.10242,0.10298,0.10353,0.10409,0.10465,0.10521,0.10577,0.10633,0.10689,0.10745,0.10801,0.10857,0.10913,0.10969,0.11025,0.11081,0.11137,0.11193,0.11249,0.11305,0.11361,0.11417,0.11473,0.11529,0.11585,0.11641,0.11697,0.11753,0.11809,0.11865,0.1192,0.11976,0.12032,0.12088,0.12144,0.122,0.12256,0.12312,0.12368,0.12424,0.1248,0.12536,0.12592,0.12648,0.12704,0.1276,0.12816,0.12872,0.12928,0.12984,0.1304,0.13096,0.13152,0.13208,0.13264,0.1332,0.13376,0.13432,0.13487,0.13543,0.13599,0.13655,0.13711,0.13767,0.13823,0.13879,0.13935,0.13991,0.14047,0.14103,0.14159,0.14215,0.14271,0.14327,0.14383,0.14439,0.14495,0.14551,0.14607,0.14663,0.14719,0.14775,0.14831,0.14887,0.14943,0.14999,0.15055,0.1511,0.15166,0.15222,0.15278,0.15334,0.1539,0.15446,0.15502,0.15558,0.15614,0.1567,0.15726,0.15782,0.15838,0.15894,0.1595,0.16006,0.16062,0.16118,0.16174,0.1623,0.16286,0.16342,0.16398,0.16454,0.1651,0.16566,0.16622,0.16677,0.16733,0.16789,0.16845,0.16901,0.16957,0.17013,0.17069,0.17125,0.17181,0.17237,0.17293,0.17349,0.17405,0.17461,0.17517,0.17573,0.17629,0.17685,0.17741,0.17797,0.17853,0.17909,0.17965,0.18021,0.18077,0.18133,0.18189,0.18245,0.183,0.18356,0.18412,0.18468,0.18524,0.1858,0.18636,0.18692,0.18748,0.18804,0.1886,0.18916,0.18972,0.19028,0.19084,0.1914,0.19196,0.19252,0.19308,0.19364,0.1942,0.19476,0.19532,0.19588,0.19644,0.197,0.19756,0.19812,0.19867,0.19923,0.19979,0.20035,0.20091,0.20147,0.20203,0.20226,0.20259,0.20315,0.20371,0.20427,0.20483,0.20539,0.20595,0.20651,0.20707,0.20763,0.20819,0.20875,0.20931,0.20987,0.21043,0.21099,0.21155,0.21211,0.21267,0.21323,0.21379,0.21434,0.2149,0.21546,0.21602,0.21658,0.21714,0.2177,0.21826,0.21882,0.21938,0.21994,0.2205,0.22106,0.22162,0.22218,0.22274,0.2233,0.22386,0.22442,0.22498,0.22554,0.2261,0.22666,0.22722,0.22778,0.22834,0.2289,0.22946,0.23002,0.23057,0.23113,0.23169,0.23225,0.23281,0.23337,0.23393,0.23449,0.23505,0.23561,0.23617,0.23673,0.23729,0.23785,0.23841,0.23897,0.23953,0.24009,0.24065,0.24121,0.24177,0.24233,0.24289,0.24345,0.24401,0.24457,0.24513,0.24569,0.24624,0.2468,0.24736,0.24792,0.24848,0.24904,0.2496,0.25016,0.25072,0.25128,0.25184,0.2524,0.25296,0.25352,0.25408,0.25464,0.2552,0.25576,0.25632,0.25688,0.25744,0.258,0.25856,0.25912,0.25968,0.26024,0.2608,0.26136,0.26191,0.26247,0.26303,0.26359,0.26415,0.26471,0.26527,0.26583,0.26639,0.26695,0.26751,0.26807,0.26863,0.26919,0.26975,0.27031,0.27087,0.27143,0.27199,0.27255,0.27311,0.27367,0.27423,0.27479,0.27535,0.27591,0.27647,0.27703,0.27759,0.27814,0.2787,0.27926],"y":[1.063,1.065,1.067,1.067,1.068,1.068,1.068,1.069,1.07,1.072,1.073,1.074,1.075,1.076,1.077,1.078,1.078,1.079,1.079,1.08,1.08,1.08,1.081,1.081,1.081,1.081,1.081,1.081,1.081,1.081,1.081,1.081,1.081,1.081,1.081,1.081,1.08,1.08,1.08,1.079,1.079,1.079,1.078,1.078,1.078,1.077,1.077,1.076,1.076,1.076,1.075,1.075,1.075,1.074,1.074,1.073,1.073,1.073,1.072,1.072,1.071,1.071,1.071,1.07,1.07,1.069,1.069,1.068,1.068,1.067,1.067,1.066,1.066,1.065,1.064,1.064,1.063,1.062,1.062,1.061,1.06,1.059,1.059,1.058,1.057,1.056,1.055,1.054,1.053,1.052,1.052,1.051,1.05,1.049,1.048,1.047,1.046,1.045,1.044,1.043,1.042,1.041,1.04,1.039,1.038,1.037,1.036,1.035,1.033,1.032,1.031,1.03,1.029,1.028,1.027,1.026,1.025,1.024,1.022,1.021,1.02,1.019,1.018,1.017,1.016,1.014,1.013,1.012,1.011,1.01,1.009,1.007,1.006,1.005,1.004,1.003,1.001,1.0,0.999,0.998,0.997,0.995,0.994,0.993,0.992,0.991,0.989,0.988,0.987,0.986,0.984,0.983,0.982,0.981,0.98,0.978,0.977,0.976,0.975,0.973,0.972,0.971,0.97,0.968,0.967,0.966,0.965,0.964,0.962,0.961,0.96,0.959,0.957,0.956,0.955,0.954,0.953,0.951,0.95,0.949,0.948,0.946,0.945,0.944,0.943,0.942,0.94,0.939,0.938,0.937,0.936,0.934,0.933,0.932,0.931,0.93,0.929,0.928,0.926,0.925,0.924,0.923,0.922,0.921,0.92,0.919,0.918,0.917,0.916,0.915,0.914,0.913,0.912,0.911,0.91,0.909,0.909,0.908,0.907,0.907,0.906,0.905,0.905,0.904,0.904,0.904,0.903,0.903,0.903,0.903,0.903,0.903,0.904,0.904,0.905,0.905,0.906,0.907,0.908,0.91,0.911,0.913,0.915,0.917,0.92,0.922,0.926,0.929,0.933,0.937,0.942,0.947,0.952,0.958,0.965,0.972,0.98,0.988,0.997,1.007,1.018,1.03,1.043,1.056,1.071,1.087,1.104,1.123,1.142,1.164,1.186,1.211,1.237,1.264,1.294,1.325,1.358,1.393,1.431,1.47,1.511,1.555,1.6,1.648,1.698,1.75,1.804,1.86,1.917,1.977,2.038,2.1,2.164,2.23,2.296,2.363,2.43,2.498,2.566,2.634,2.701,2.768,2.834,2.899,2.963,3.026,3.088,3.147,3.206,3.262,3.317,3.37,3.42,3.469,3.517,3.562,3.605,3.647,3.687,3.725,3.761,3.796,3.831,3.861,3.891,3.92,3.947,3.974,3.999,4.023,4.046,4.068,4.089,4.108,4.127,4.145,4.161,4.177,4.192,4.206,4.22,4.232,4.244,4.255,4.266,4.275,4.284,4.293,4.301,4.308,4.314,4.32,4.326,4.331,4.335,4.339,4.342,4.344,4.347,4.348,4.349,4.35,4.35,4.35,4.35,4.349,4.348,4.346,4.344,4.341,4.339,4.335,4.331,4.327,4.322,4.317,4.312,4.306,4.3,4.293,4.286,4.278,4.27,4.262,4.254,4.245,4.236,4.226,4.216,4.207,4.196,4.186,4.175,4.164,4.153,4.141,4.13,4.118,4.106,4.094,4.081,4.069,4.056,4.043,4.03,4.017,4.004,3.99,3.977,3.963,3.95,3.936,3.922,3.908,3.894,3.88,3.866,3.851,3.837,3.823,3.808,3.794,3.779,3.765,3.75,3.736,3.721,3.707,3.692,3.677,3.663,3.648,3.634,3.619,3.604,3.59,3.575,3.561,3.546,3.532,3.517,3.503,3.488,3.474,3.46,3.445,3.431,3.417,3.403,3.388,3.374,3.36,3.346,3.332,3.318,3.305,3.291,3.277,3.263,3.25,3.236,3.223,3.209,3.196,3.182,3.169,3.156,3.143,3.13,3.117,3.104,3.091,3.078,3.065,3.053,3.04,3.027,3.015,3.003,2.99,2.978,2.966,2.954,2.942,2.93,2.918,2.906,2.894,2.882,2.871,2.859,2.848,2.836,2.825,2.814,2.802,2.791,2.779,2.767,2.759,2.752]}};
 
 /* ---------- theme toggle: Auto -> Light -> Dark ---------- */
 (function(){
@@ -555,6 +597,8 @@ tabs.forEach((t,i)=>t.addEventListener('keydown',e=>{
   if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
     const n=tabs[(i+(e.key==='ArrowRight'?1:tabs.length-1))%tabs.length];n.focus();show(n);}}));
 const start=tabs.find(t=>('#'+t.id)===location.hash); if(start) show(start);
+const hashEl=(!start&&location.hash)?document.getElementById(location.hash.slice(1)):null;
+if(hashEl){const pn=hashEl.closest('.panel'); if(pn){const tb=tabs.find(x=>x.getAttribute('aria-controls')===pn.id); if(tb) show(tb);}}
 
 /* ---------- PurpleAir overlay chips ---------- */
 (function(){
@@ -566,41 +610,24 @@ const start=tabs.find(t=>('#'+t.id)===location.hash); if(start) show(start);
   });
 })();
 
-/* ---------- inlet explorer: slider drives contour cross-fade + interpolated curve ---------- */
+/* ---------- inlet explorer: real simulation data only, no interpolation ---------- */
 (function(){
-  const XMAX=0.3, YMAX=7;
+  const XMAX=0.3, YMAX=7, CASES=[3,7,11];
   const cases={3:CURVES["3"],7:CURVES["7"],11:CURVES["11"]};
   const flow={3:7.8,7:43,11:101};
   const L={3:document.getElementById('L3'),7:document.getElementById('L7'),11:document.getElementById('L11')};
   const range=document.getElementById('sizeRange'), chips=[...document.querySelectorAll('#sizeChips .chip[data-d]')];
   const peakline=document.getElementById('peakline'), peaktag=document.getElementById('peaktag');
   const rDia=document.getElementById('rDia'), rPeak=document.getElementById('rPeak'), rPos=document.getElementById('rPos'),
-        rFlow=document.getElementById('rFlow'), rFlowNote=document.getElementById('rFlowNote');
+        rFlow=document.getElementById('rFlow'), rFlowNote=document.getElementById('rFlowNote'), status=document.getElementById('status');
   const svg=document.getElementById('chart'), playBtn=document.getElementById('playBtn');
   const bubble=document.getElementById('bubble'), control=document.getElementById('control');
-  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const lerp=(a,b,t)=>a+(b-a)*t;
-  function samp(c,x){ const X=c.x,Y=c.y,n=X.length;
-    if(x<=X[0]) return Y[0]; if(x>=X[n-1]) return Y[n-1];
-    let lo=0,hi=n-1; while(hi-lo>1){const m=(lo+hi)>>1; if(X[m]<=x) lo=m; else hi=m;}
-    return lerp(Y[lo],Y[hi],(x-X[lo])/(X[hi]-X[lo]));
-  }
-  const peak={}; for(const k in cases){const c=cases[k]; let i=0; c.y.forEach((v,j)=>{if(v>c.y[i]) i=j;}); peak[k]={x:c.x[i],y:c.y[i],end:c.x[c.x.length-1]};}
+  const peak={}; CASES.forEach(k=>{const c=cases[k]; let i=0; c.y.forEach((v,j)=>{if(v>c.y[i]) i=j;}); peak[k]={x:c.x[i],y:c.y[i]};});
+  const color={3:'var(--a3)',7:'var(--a2)',11:'var(--a4)'};
 
-  /* curve for any diameter: align by peak position, blend the two neighbouring simulated cases */
-  function curve(d){
-    const a=d<=7?3:7, b=d<=7?7:11, s=d<=7?(d-3)/4:(d-7)/4;
-    const xp=lerp(peak[a].x,peak[b].x,s), xend=lerp(peak[a].end,peak[b].end,s), pts=[];
-    for(let i=0;i<=160;i++){
-      const x=xend*i/160, u=x-xp;
-      pts.push([x,lerp(samp(cases[a],peak[a].x+u),samp(cases[b],peak[b].x+u),s)]);
-    }
-    let pk=pts[0]; pts.forEach(p=>{if(p[1]>pk[1]) pk=p;});
-    return {pts,pk};
-  }
-
-  /* chart scaffold */
+  /* chart scaffold: the three simulated curves, drawn straight from the data */
   const M={l:56,r:18,t:16,b:44}, W=680,H=300, pw=W-M.l-M.r, ph=H-M.t-M.b;
   const X=x=>M.l+x/XMAX*pw, Y=y=>M.t+ph-y/YMAX*ph, NS='http://www.w3.org/2000/svg';
   const mk=(n,at,txt)=>{const e=document.createElementNS(NS,n);for(const k in at)e.setAttribute(k,at[k]);if(txt!=null)e.textContent=txt;svg.appendChild(e);return e;};
@@ -609,39 +636,56 @@ const start=tabs.find(t=>('#'+t.id)===location.hash); if(start) show(start);
   mk('line',{x1:M.l,x2:M.l,y1:M.t,y2:H-M.b,class:'axis'}); mk('line',{x1:M.l,x2:W-M.r,y1:H-M.b,y2:H-M.b,class:'axis'});
   mk('text',{x:M.l+pw/2,y:H-6,'text-anchor':'middle'},'Axial length (m)');
   mk('text',{x:14,y:M.t+ph/2,'text-anchor':'middle',transform:`rotate(-90 14 ${M.t+ph/2})`},'Turbulence intensity (%)');
-  const ghostColor={3:'var(--a3)',7:'var(--a2)',11:'var(--a4)'};
-  [3,7,11].forEach(k=>{
-    const c=cases[k]; mk('path',{d:c.x.map((x,i)=>(i?'L':'M')+X(x).toFixed(1)+' '+Y(c.y[i]).toFixed(1)).join(' '),class:'ghost',stroke:ghostColor[k]});
-    mk('text',{x:X(peak[k].x)+8,y:Y(peak[k].y)-6},k+' mm');
+  const path={}, label={};
+  CASES.forEach(k=>{
+    const c=cases[k];
+    path[k]=mk('path',{d:c.x.map((x,i)=>(i?'L':'M')+X(x).toFixed(1)+' '+Y(c.y[i]).toFixed(1)).join(' '),class:'cv',stroke:color[k]});
+    label[k]=mk('text',{x:X(peak[k].x)+8,y:Y(peak[k].y)-6},k+' mm');
   });
-  const drop=mk('line',{class:'drop',y1:M.t,y2:H-M.b,x1:0,x2:0});
-  const live=mk('path',{class:'live',d:''}), dot=mk('circle',{class:'dot',r:6,cx:0,cy:0});
+  const drop=mk('line',{class:'drop',y1:M.t,y2:H-M.b,x1:0,x2:0,style:'display:none'});
+  const dot=mk('circle',{class:'dot',r:6,cx:0,cy:0,style:'display:none'});
 
   function render(d){
     d=Math.min(11,Math.max(3,d));
-    // contour: bottom layer opaque, upper neighbour fades in -> no dimming, no jump
+    // picture: a visual cross-fade between neighbouring simulated cases (a transition only)
     if(d<=7){ L[3].style.opacity=1; L[7].style.opacity=(d-3)/4; L[11].style.opacity=0; }
     else    { L[3].style.opacity=0; L[7].style.opacity=1; L[11].style.opacity=(d-7)/4; }
-    const {pts,pk}=curve(d);
-    live.setAttribute('d',pts.map((p,i)=>(i?'L':'M')+X(p[0]).toFixed(1)+' '+Y(p[1]).toFixed(1)).join(' '));
-    dot.setAttribute('cx',X(pk[0])); dot.setAttribute('cy',Y(pk[1]));
-    drop.setAttribute('x1',X(pk[0])); drop.setAttribute('x2',X(pk[0]));
-    const pct=pk[0]/XMAX*100; peakline.style.left=pct+'%'; peaktag.style.left=Math.min(92,Math.max(8,pct))+'%'; peaktag.textContent='peak '+pk[1].toFixed(1)+'%';
-    rDia.textContent=d.toFixed(1)+' mm'; rPeak.textContent=pk[1].toFixed(1)+' %'; rPos.textContent=pk[0].toFixed(3)+' m';
-    const near=[3,7,11].find(k=>Math.abs(k-d)<0.06);
-    rFlow.textContent=near?flow[near]+' LPM':'between cases'; rFlowNote.textContent=near?'sampling flow rate (simulated case)':'flow rates simulated at 7.8, 43 and 101 LPM';
+    const near=CASES.reduce((a,b)=>Math.abs(b-d)<Math.abs(a-d)?b:a);
+    const on=Math.abs(near-d)<0.05;
+    const lo=d<=7?3:7, hi=d<=7?7:11;
+    CASES.forEach(k=>{
+      let w=1.5,o=0.3;                                          // other cases: faint
+      if(on){ if(k===near){w=3.6;o=1;} }
+      else  { if(k===lo||k===hi){w=2.4;o=0.85;} }               // between: both neighbouring cases shown as they are
+      path[k].style.strokeWidth=w; path[k].style.opacity=o; label[k].style.opacity=on&&k!==near?0.4:1;
+    });
+    if(on){
+      dot.style.display=''; drop.style.display='';
+      dot.setAttribute('cx',X(peak[near].x)); dot.setAttribute('cy',Y(peak[near].y)); dot.setAttribute('fill',color[near]);
+      drop.setAttribute('x1',X(peak[near].x)); drop.setAttribute('x2',X(peak[near].x)); drop.setAttribute('stroke',color[near]);
+      const pct=peak[near].x/XMAX*100; peakline.style.display=''; peaktag.style.display='';
+      peakline.style.left=pct+'%'; peaktag.style.left=Math.min(92,Math.max(8,pct))+'%'; peaktag.textContent='peak '+peak[near].y.toFixed(1)+'%';
+      rPeak.textContent=peak[near].y.toFixed(1)+' %'; rPos.textContent=peak[near].x.toFixed(3)+' m';
+      rFlow.textContent=flow[near]+' LPM'; rFlowNote.textContent='sampling flow rate (simulated case)';
+      status.textContent='Simulated case: '+near+' mm, '+flow[near]+' LPM. Peak turbulence '+peak[near].y.toFixed(1)+'% at '+peak[near].x.toFixed(3)+' m.';
+    } else {
+      dot.style.display='none'; drop.style.display='none'; peakline.style.display='none'; peaktag.style.display='none';
+      rPeak.textContent='n/a'; rPos.textContent='n/a'; rFlow.textContent='between cases';
+      rFlowNote.textContent='simulated at 7.8, 43 and 101 LPM';
+      status.textContent='Between the '+lo+' mm and '+hi+' mm cases. No simulation at this size: the curves shown are the two simulated cases, and the picture is only a transition.';
+    }
+    rDia.textContent=d.toFixed(1)+' mm';
     range.value=d; range.setAttribute('aria-valuetext',d.toFixed(1)+' millimeters');
-    // slider fill + floating value bubble that follows the thumb
     const p=(d-3)/8; range.style.setProperty('--p',(p*100)+'%');
     bubble.style.left='calc(16px + (100% - 32px) * '+p+')'; bubble.textContent=d.toFixed(1)+' mm';
-    chips.forEach(c=>c.setAttribute('aria-pressed',Math.abs(+c.dataset.d-d)<0.06));
+    chips.forEach(c=>c.setAttribute('aria-pressed',on&&+c.dataset.d===near));
   }
 
   /* tick labels under the slider (click to jump) */
   const ticks=document.getElementById('ticks');
   [[3,'3 mm','7.8 LPM'],[7,'7 mm','43 LPM'],[11,'11 mm','101 LPM']].forEach(([v,a,b])=>{
     const s=document.createElement('span'); s.style.left=((v-3)/8*100)+'%'; s.innerHTML='<b>'+a+'</b><br>'+b;
-    s.addEventListener('click',()=>{ stopPlay(); animateTo(v); }); ticks.appendChild(s);
+    s.addEventListener('click',()=>{ stopPlay(); unpulse(); animateTo(v); }); ticks.appendChild(s);
   });
 
   /* smooth, slow animation toward a target diameter (sine ease in and out) */
@@ -658,8 +702,12 @@ const start=tabs.find(t=>('#'+t.id)===location.hash); if(start) show(start);
       })(t0);
     });
   }
-  const unpulse=()=>control.classList.remove('pulse');
-  range.addEventListener('input',()=>{ unpulse(); stopPlay(); cancelAnimationFrame(raf); cur=+range.value; render(cur); });
+  function unpulse(){ control.classList.remove('pulse'); }
+  range.addEventListener('input',()=>{
+    unpulse(); stopPlay(); cancelAnimationFrame(raf);
+    let v=+range.value; const s=CASES.find(k=>Math.abs(k-v)<0.25); if(s!==undefined) v=s;   // snap to a simulated case
+    cur=v; render(cur);
+  });
   chips.forEach(c=>c.addEventListener('click',()=>{ unpulse(); stopPlay(); animateTo(+c.dataset.d); }));
 
   /* play sweep: 3 -> 7 -> 11 -> 7 -> 3, each leg slow, with a pause at each simulated case */
@@ -669,15 +717,15 @@ const start=tabs.find(t=>('#'+t.id)===location.hash); if(start) show(start);
   playBtn.addEventListener('click',async()=>{
     if(playing){ stopPlay(); cancelAnimationFrame(raf); return; }
     unpulse(); playing=true; const my=++token; playBtn.innerHTML='&#10074;&#10074; Pause';
-    const path=cur>=10.9?[7,3]:cur>=6.9?[11,7,3]:[7,11,7,3];
+    const path2=cur>=10.9?[7,3]:cur>=6.9?[11,7,3]:[7,11,7,3];
     while(playing&&my===token){
-      for(const target of path){
+      for(const target of path2){
         if(!(playing&&my===token)) return;
         await animateTo(target,5500);
         if(!(playing&&my===token)) return;
-        await wait(1600);
+        await wait(1800);
       }
-      path.splice(0,path.length,7,11,7,3);   // later loops always run the full 3 -> 11 -> 3 cycle
+      path2.splice(0,path2.length,7,11,7,3);
     }
   });
 

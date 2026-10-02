@@ -209,6 +209,22 @@
     .widget p.note{order:4}
     .control .label span{display:none} .control .label{margin-bottom:34px} .legend span:last-child{display:none}
   }
+  /* photo, jump menus, small figure grids */
+  .hero-grid{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center}
+  img.me{width:172px;height:172px;border-radius:50%;object-fit:cover;border:4px solid var(--surface);box-shadow:var(--shadow)}
+  .jump{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:14px 0 24px}
+  .jump span{color:var(--muted);font-size:var(--fs-sm);margin-right:4px}
+  .jump a{font-size:var(--fs-sm);text-decoration:none;padding:5px 14px;border-radius:999px;color:var(--text);background:var(--surface);
+          border:1px solid color-mix(in srgb,var(--tc) 55%,var(--line));transition:background .15s}
+  .jump a:hover{background:color-mix(in srgb,var(--tc) 14%,var(--surface))}
+  [id]{scroll-margin-top:84px}
+  .grid.small{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+  .grid.small-tall{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));max-width:780px}
+  svg.chart .cv{fill:none;stroke-linejoin:round;transition:opacity .2s,stroke-width .2s}
+  @media (max-width:700px){
+    .hero-grid{grid-template-columns:1fr;gap:20px}
+    img.me{order:-1;width:104px;height:104px}
+  }
 </style>
 <script>
   /* apply a saved theme choice before first paint (falls back to the system setting) */
@@ -226,7 +242,9 @@
 <main class="wrap">
 
 <header class="hero" id="about">
-  <div class="eyebrow">Mechanical engineer &middot; aerosol science and measurement</div>
+  <div class="hero-grid">
+    <div class="hero-text">
+<div class="eyebrow">Mechanical engineer &middot; aerosol science and measurement</div>
   <h1>Nagarajan Radhakrishnan</h1>
   <p class="lead">I work on measuring aerosols and airflow. My work covers CFD simulation, design and manufacturing of the hardware, wind-tunnel and flight testing,
      and processing the data, including hot-wire measurements that verify what the flow is doing inside the instrument. I am a Ph.D. candidate in
@@ -249,23 +267,32 @@
       </div>
     </details>
   </div>
+    </div>
+    <img class="me" src="assets/me.webp" width="420" height="420" alt="Nagarajan Radhakrishnan at work in the WB-57 operations room">
+  </div>
 </header>
 
 <section id="work">
   <h2>Projects</h2>
-  <p class="sub">Select a project. Click any figure to enlarge it.</p>
+  <p class="sub">Select a project. Each one has a short menu to jump straight to a topic. Click any figure to enlarge it.</p>
 
   <div class="tabs" role="tablist" aria-label="Projects">
     <button class="tab" data-tc="1" role="tab" id="t-nissa" aria-controls="p-nissa" aria-selected="true">NISSA aircraft inlet (CFD)</button>
     <button class="tab" data-tc="2" role="tab" id="t-pa" aria-controls="p-pa" aria-selected="false">PurpleAir sensor aspiration (CFD)</button>
     <button class="tab" data-tc="3" role="tab" id="t-flight" aria-controls="p-flight" aria-selected="false">Wind-tunnel and flight measurements</button>
-    <button class="tab" data-tc="4" role="tab" id="t-box" aria-controls="p-box" aria-selected="false">Flight electronics</button>
-    <button class="tab" data-tc="2" role="tab" id="t-iit" aria-controls="p-iit" aria-selected="false">LiDust emission monitor (IIT Madras)</button>
+    <button class="tab" data-tc="4" role="tab" id="t-box" aria-controls="p-box" aria-selected="false">Electronics</button>
   </div>
 
   <!-- ================= NISSA ================= -->
   <div class="panel" data-tc="1" id="p-nissa" role="tabpanel" aria-labelledby="t-nissa">
     <span class="tag">ANSYS Fluent</span><span class="tag">RANS k-ω SST / k-ε</span><span class="tag">Parametric design</span><span class="tag">NASA WB-57</span>
+    <div class="jump" role="group" aria-label="Jump to a topic in this project">
+      <span>Jump to:</span>
+      <a href="#nissa-design">Design and hardware</a>
+      <a href="#nissa-setup">Simulation setup</a>
+      <a href="#explorer">Interactive: tube size</a>
+      <a href="#nissa-results">Results</a>
+    </div>
     <div class="two">
       <div>
         <h3>NISSA: Nested Inlet for Sampling Stratospheric Aerosol</h3>
@@ -287,11 +314,29 @@
       <div class="fact"><b>10 nm to 10 µm</b><span>particle size range the inlet is designed to sample</span></div>
     </div>
 
+    <h4 id="nissa-design">Design and hardware</h4>
+    <p class="group-note">What the inlet looks like, on the bench and on the aircraft.</p>
+    <div class="grid">
+      <figure><img src="assets/nissa_wb57.webp" alt="NISSA mounted under the WB-57 aircraft" loading="lazy">
+        <figcaption><b>On the aircraft.</b> The WB-57 on the ramp (left) and the inlet's mounting location under the airframe (right). Position matters because the inlet samples the air the aircraft itself disturbs.</figcaption></figure>
+      <figure><img src="assets/nissa_section.webp" alt="3D cross-section of NISSA" loading="lazy">
+        <figcaption><b>Cross-section.</b> The three nested stages seen from the side: outer shroud, expansion section, and the final sub-sample line that bends toward the aircraft plumbing.</figcaption></figure>
+    </div>
+
+    <h4 id="nissa-setup">Simulation setup</h4>
+    <p class="group-note">How the flow is resolved before any results are trusted.</p>
+    <div class="grid">
+      <figure><img src="assets/nissa_mesh.webp" alt="Refined 3D mesh around the inlet" loading="lazy">
+        <figcaption><b>The computational mesh.</b> Millions of tiny cells packed close to the walls (y⁺ ≤ 1) so the thin layer of slow air next to the surface is captured. Turbulence predictions are only as good as this layer.</figcaption></figure>
+      <figure><img src="assets/nissa_expansion.webp" alt="Velocity magnitude for two expansion angles" loading="lazy">
+        <figcaption><b>Comparing expansion angles.</b> Air speed through two designs (2.3° on top, 3.3° below). The angle of the expansion section controls how quickly the air slows, a key design lever.</figcaption></figure>
+    </div>
+
     <div class="widget" id="explorer">
       <h3>Interactive: change the sampling-tube size and watch the turbulence move</h3>
-      <p class="hint"><b>How to read this:</b> the inlet is simulated at three sampling-tube sizes. Drag the slider (or tap 3, 7 or 11 mm). Color in the picture is
-         turbulence intensity along the inlet; the graph below shows turbulence along the centerline. A larger tube moves the turbulence peak further
-         downstream and lowers it, which is how the design keeps the sampled air calm.</p>
+      <p class="hint"><b>How to read this:</b> the inlet was simulated with three sampling-tube sizes: 3, 7 and 11 mm. Drag the slider (it snaps to each simulated case) or tap a size.
+         Color in the picture is turbulence intensity along the inlet; the graph shows turbulence along the centerline, straight from the simulation data.
+         A larger tube moves the turbulence peak further downstream and lowers it, which is how the design keeps the sampled air calm.</p>
       <div class="chips" id="sizeChips">
         <button class="chip" data-d="3" aria-pressed="false">3 mm</button>
         <button class="chip" data-d="7" aria-pressed="false">7 mm</button>
@@ -309,15 +354,15 @@
       <div class="legend"><span>Low turbulence</span><i></i><span>High turbulence</span><span style="margin-left:auto">Flow runs left to right, 0 to 0.3 m</span></div>
 
       <div class="viz">
-      <svg class="chart" id="chart" viewBox="0 0 680 300" role="img" aria-label="Centerline turbulence intensity versus axial length"></svg>
-      <div class="readout">
-        <div><b id="rDia">3.0 mm</b><span>sampling-tube diameter</span></div>
-        <div><b id="rPeak">6.8 %</b><span>peak centerline turbulence intensity</span></div>
-        <div><b id="rPos">0.045 m</b><span>peak position along the inlet</span></div>
-        <div><b id="rFlow">7.8 LPM</b><span id="rFlowNote">sampling flow rate (simulated case)</span></div>
+        <svg class="chart" id="chart" viewBox="0 0 680 300" role="img" aria-label="Centerline turbulence intensity versus axial length for the 3, 7 and 11 mm cases"></svg>
+        <div class="readout">
+          <div><b id="rDia">3.0 mm</b><span>sampling-tube diameter</span></div>
+          <div><b id="rPeak">6.8 %</b><span>peak centerline turbulence intensity</span></div>
+          <div><b id="rPos">0.045 m</b><span>peak position along the inlet</span></div>
+          <div><b id="rFlow">7.8 LPM</b><span id="rFlowNote">sampling flow rate (simulated case)</span></div>
+        </div>
       </div>
 
-      </div>
       <div class="control pulse" id="control">
         <div class="label">&#8596; Drag the slider to change the tube size <span>or use the arrow keys</span></div>
         <div class="track">
@@ -326,29 +371,10 @@
         </div>
         <div class="ticks" id="ticks"></div>
       </div>
-
-      <p class="note" style="margin:10px 0 0">Faint lines are the three simulated cases (3, 7 and 11 mm). Between them, the bold curve and the picture are smoothly interpolated as a visual guide, not new simulations.</p>
+      <p class="note" id="status" style="margin:12px 0 0" aria-live="polite">Simulated case: 3 mm, 7.8 LPM.</p>
     </div>
 
-    <h4>Design and hardware</h4>
-    <p class="group-note">What the inlet looks like, on the bench and on the aircraft.</p>
-    <div class="grid">
-      <figure><img src="assets/nissa_wb57.webp" alt="NISSA mounted under the WB-57 aircraft" loading="lazy">
-        <figcaption><b>On the aircraft.</b> The WB-57 on the ramp (left) and the inlet's mounting location under the airframe (right). Position matters because the inlet samples the air the aircraft itself disturbs.</figcaption></figure>
-      <figure><img src="assets/nissa_section.webp" alt="3D cross-section of NISSA" loading="lazy">
-        <figcaption><b>Cross-section.</b> The three nested stages seen from the side: outer shroud, expansion section, and the final sub-sample line that bends toward the aircraft plumbing.</figcaption></figure>
-    </div>
-
-    <h4>Simulation setup</h4>
-    <p class="group-note">How the flow is resolved before any results are trusted.</p>
-    <div class="grid">
-      <figure><img src="assets/nissa_mesh.webp" alt="Refined 3D mesh around the inlet" loading="lazy">
-        <figcaption><b>The computational mesh.</b> Millions of tiny cells packed close to the walls (y⁺ ≤ 1) so the thin layer of slow air next to the surface is captured. Turbulence predictions are only as good as this layer.</figcaption></figure>
-      <figure><img src="assets/nissa_expansion.webp" alt="Velocity magnitude for two expansion angles" loading="lazy">
-        <figcaption><b>Comparing expansion angles.</b> Air speed through two designs (2.3° on top, 3.3° below). The angle of the expansion section controls how quickly the air slows, a key design lever.</figcaption></figure>
-    </div>
-
-    <h4>Results</h4>
+    <h4 id="nissa-results">Results</h4>
     <p class="group-note">What the simulations show about the air and the particles inside the inlet.</p>
     <div class="grid">
       <figure><img src="assets/nissa_ti3d.webp" alt="3D turbulence intensity contour" loading="lazy">
@@ -361,7 +387,15 @@
   <!-- ================= PurpleAir ================= -->
   <div class="panel" data-tc="2" id="p-pa" role="tabpanel" aria-labelledby="t-pa" hidden>
     <span class="tag">ANSYS Fluent</span><span class="tag">Discrete random walk</span><span class="tag">Low-cost sensors</span>
-    <div class="two">
+    <div class="jump" role="group" aria-label="Jump to a topic in this project">
+      <span>Jump to:</span>
+      <a href="#pa-sensor">The sensor</a>
+      <a href="#pa-model">Model and particle tracks</a>
+      <a href="#pa-results">Efficiency results</a>
+      <a href="#pa-compare">Compare with correlations</a>
+      <a href="#pa-pressure">Pressure</a>
+    </div>
+    <div class="two" id="pa-sensor">
       <div>
         <h3>Aspiration efficiency of the PurpleAir PA-II-Flex</h3>
         <p>Low-cost sensors such as the Plantower PMS5003 report PM1, PM2.5 and PM10, but the housing around them decides which
@@ -373,40 +407,42 @@
           <li>Presented at AAAR, with field-data validation as the next step.</li>
         </ul>
       </div>
-      <figure><img src="assets/pa_hardware.webp" alt="PurpleAir PA-II-Flex opened to show the two sensors" loading="lazy" style="max-width:340px">
+      <figure><img src="assets/pa_hardware.webp" alt="PurpleAir PA-II-Flex opened to show the two sensors" loading="lazy" style="max-width:240px">
         <figcaption><b>The sensor.</b> The PA-II-Flex opened to show the pair of Plantower sensors inside its housing.</figcaption></figure>
     </div>
 
-    <div class="widget">
-      <h3>Interactive: my CFD against published correlations</h3>
-      <p class="hint"><b>How to read this:</b> each curve is the fraction of particles that make it into the sensor, plotted against particle size (as Stokes number). Curves
-         that fall off earlier mean the housing loses more particles. Switch the overlay to compare my CFD with classical textbook correlations.</p>
-      <div class="chips" id="paChips">
-        <button class="chip" data-img="assets/pa_stokes.webp"     data-cap="CFD results only, at five wind speeds." aria-pressed="true">CFD only</button>
-        <button class="chip" data-img="assets/pa_vs_davis.webp"   data-cap="CFD with the Davis and Subari correlation (0.4 m/s) overlaid." aria-pressed="false">+ Davis and Subari</button>
-        <button class="chip" data-img="assets/pa_vs_hangal.webp"  data-cap="CFD with the Hangal and Willeke correlation overlaid." aria-pressed="false">+ Hangal and Willeke</button>
-        <button class="chip" data-img="assets/pa_vs_durham.webp"  data-cap="CFD with the Durham and Lundgren correlation overlaid." aria-pressed="false">+ Durham and Lundgren</button>
-      </div>
-      <figure><img id="paImg" src="assets/pa_stokes.webp" alt="Particles crossing versus square root of Stokes number"><figcaption id="paCap">CFD results only, at five wind speeds.</figcaption></figure>
-    </div>
-
-    <h4>Model and particle behavior</h4>
-    <p class="group-note">The geometry that was simulated and how particles move around and into it.</p>
-    <div class="grid">
+    <h4 id="pa-model">How it was modeled</h4>
+    <p class="group-note">The 3D model, then the paths particles take around and into the housing.</p>
+    <div class="grid small">
       <figure><img src="assets/pa_geometry.webp" alt="3D model of the housing" loading="lazy">
-        <figcaption><b>The 3D model.</b> The housing and sensor slits as built in the simulation, ready for meshing.</figcaption></figure>
+        <figcaption><b>The 3D model.</b> Housing and sensor slits as built for the simulation.</figcaption></figure>
       <figure><img src="assets/pa_tracks_side.webp" alt="Particle tracks around the housing, side view" loading="lazy">
-        <figcaption><b>Particle tracks, side view.</b> Each line is one particle's path as wind carries it past the housing.</figcaption></figure>
+        <figcaption><b>Particle tracks, side view.</b> Each line is one particle's path past the housing.</figcaption></figure>
       <figure><img src="assets/pa_tracks_top.webp" alt="Particle tracks around the housing, top view" loading="lazy">
-        <figcaption><b>Particle tracks, top view.</b> The same simulation from above, showing how particles swing around the enclosure.</figcaption></figure>
+        <figcaption><b>Particle tracks, top view.</b> The same simulation from above.</figcaption></figure>
       <figure><img src="assets/pa_tracks_cut.webp" alt="Particle tracks entering the housing" loading="lazy">
-        <figcaption><b>Entering the enclosure.</b> Close-up of the particles that reach the opening, the ones the sensor can actually count.</figcaption></figure>
+        <figcaption><b>Entering the enclosure.</b> The particles that reach the opening, the ones the sensor can count.</figcaption></figure>
     </div>
 
-    <h4>Results</h4>
-    <div class="grid">
+    <h4 id="pa-results">Efficiency results</h4>
+    <div class="two" style="margin-top:12px">
       <figure><img src="assets/pa_results.webp" alt="Percent of particles crossing versus particle diameter at five wind speeds" loading="lazy">
         <figcaption><b>Particles reaching the sensor.</b> Share of particles that cross into the housing against particle diameter, at five wind speeds. Larger particles and stronger winds mean fewer particles make it in, so coarse-particle readings can be biased low.</figcaption></figure>
+      <div class="widget" id="pa-compare" style="margin-top:0">
+        <h3>Interactive: my CFD against published correlations</h3>
+        <p class="hint"><b>How to read this:</b> each curve is the fraction of particles that make it into the sensor against particle size (as Stokes number). Curves that fall off earlier mean the housing loses more particles. Switch the overlay to compare with classical correlations.</p>
+        <div class="chips" id="paChips">
+          <button class="chip" data-img="assets/pa_stokes.webp"     data-cap="CFD results only, at five wind speeds." aria-pressed="true">CFD only</button>
+          <button class="chip" data-img="assets/pa_vs_davis.webp"   data-cap="CFD with the Davis and Subari correlation (0.4 m/s) overlaid." aria-pressed="false">+ Davis and Subari</button>
+          <button class="chip" data-img="assets/pa_vs_hangal.webp"  data-cap="CFD with the Hangal and Willeke correlation overlaid." aria-pressed="false">+ Hangal and Willeke</button>
+          <button class="chip" data-img="assets/pa_vs_durham.webp"  data-cap="CFD with the Durham and Lundgren correlation overlaid." aria-pressed="false">+ Durham and Lundgren</button>
+        </div>
+        <figure><img id="paImg" src="assets/pa_stokes.webp" alt="Particles crossing versus square root of Stokes number"><figcaption id="paCap">CFD results only, at five wind speeds.</figcaption></figure>
+      </div>
+    </div>
+
+    <h4 id="pa-pressure">Pressure</h4>
+    <div class="grid small">
       <figure><img src="assets/pa_pressure.webp" alt="Static pressure contour on the sensor plane" loading="lazy">
         <figcaption><b>Pressure on the sensor plane.</b> Static pressure across the plane where the sensors sit, the pressure field their fans work in.</figcaption></figure>
       <figure><img src="assets/pa_dp.webp" alt="Pressure drop versus wind speed" loading="lazy">
@@ -417,7 +453,12 @@
   <!-- ================= Wind tunnel & flight ================= -->
   <div class="panel" data-tc="3" id="p-flight" role="tabpanel" aria-labelledby="t-flight" hidden>
     <span class="tag">Hot-wire anemometry</span><span class="tag">Wind tunnel</span><span class="tag">Flight testing</span><span class="tag">MATLAB</span>
-    <h3>Measuring what actually happens inside the inlet</h3>
+    <div class="jump" role="group" aria-label="Jump to a topic in this project">
+      <span>Jump to:</span>
+      <a href="#fl-flight">Flight measurements</a>
+      <a href="#fl-tunnel">In the wind tunnel</a>
+    </div>
+    <h3 id="fl-flight">Measuring what actually happens inside the inlet</h3>
     <p>CFD only matters if the real inlet behaves the way the model says. NISSA flew seven research flights on the WB-57 during the SABRE 2025
        test campaign, with a miniature hot-wire, absolute and differential pressure taps, and a DPOPS instrument whose size distributions
        were compared against a balloon sounding of the same air mass.</p>
@@ -427,7 +468,7 @@
       <li>Built the flight data-reduction pipeline in MATLAB, and calibrated the Teensy 4.1 flight electronics against a laboratory reference chain.</li>
       <li>Verified that 5 Hz flight sampling preserves mean velocity and turbulence intensity, while being clear that it cannot support spectra.</li>
     </ul>
-    <h4>In the wind tunnel</h4>
+    <h4 id="fl-tunnel">In the wind tunnel</h4>
     <p class="group-note">Ground tests in Clarkson's wind tunnel give a controlled check on what the flight sensors saw.</p>
     <div class="grid tall">
       <figure><img src="assets/wt_nissa.webp" alt="Manufactured NISSA inlet mounted in the wind tunnel" loading="lazy">
@@ -438,10 +479,16 @@
     <p class="note">Detailed flight results are in preparation for publication, so flight plots are not shown here. I am happy to discuss them directly.</p>
   </div>
 
-  <!-- ================= Flight electronics ================= -->
+  <!-- ================= Electronics ================= -->
   <div class="panel" data-tc="4" id="p-box" role="tabpanel" aria-labelledby="t-box" hidden>
-    <span class="tag">Embedded systems</span><span class="tag">Teensy 4.1</span><span class="tag">Hot-wire mini-CTA</span><span class="tag">Data acquisition</span>
-    <div class="two">
+    <span class="tag">Embedded systems</span><span class="tag">Analog and digital electronics</span><span class="tag">Microcontrollers</span><span class="tag">Optics</span>
+    <div class="jump" role="group" aria-label="Jump to a topic in this project">
+      <span>Jump to:</span>
+      <a href="#el-flight">Flight control box (WB-57)</a>
+      <a href="#el-lidust">LiDust emission monitor (IIT Madras)</a>
+    </div>
+
+    <div class="two" id="el-flight">
       <div>
         <h3>The flight control and data box</h3>
         <p>For the WB-57 test flights I built the electronics that ran the hot-wire and pressure measurements. The box has to be reliable, safe to fly,
@@ -457,16 +504,13 @@
       <figure><img src="assets/flight_box.webp" alt="Inside the flight control box, showing the Teensy, LattePanda, power boards and wiring" loading="lazy">
         <figcaption><b>Inside the box.</b> Microcontroller and computer along the bottom, power boards across the middle, and the sensor connectors and fan along the top.</figcaption></figure>
     </div>
-  </div>
 
-  <!-- ================= LiDust ================= -->
-  <div class="panel" data-tc="2" id="p-iit" role="tabpanel" aria-labelledby="t-iit" hidden>
-    <span class="tag">Prototype design</span><span class="tag">Optics</span><span class="tag">GD&amp;T</span><span class="tag">Field testing</span>
-    <div class="two">
+    <div class="two" id="el-lidust" style="margin-top:44px">
       <div>
         <h3>LiDust: an optical dust-emission monitor for industrial stacks</h3>
         <p>As a Project Associate in the EnERG Lab at IIT Madras (2019 to 2021), I led the design, build and testing of two prototypes of an optical
-           dust-emission monitor, working from concept to finished hardware with a team of engineers and technicians. The label on the prototype sums up the idea:
+           dust-emission monitor, working from concept to finished hardware with a team of engineers and technicians. I was in charge of designing the optical
+           system, a laser with a beam splitter and detector,. The label on the prototype sums up the idea:
            when other sensors lie, trust an independent optical measurement.</p>
         <ul class="tight">
           <li>Production drawings to ASME GD&amp;T practice in Autodesk Inventor.</li>
@@ -474,12 +518,10 @@
           <li>Analyzed isokinetic gravimetric sampling data with time-series signal processing in MATLAB and LabVIEW, the reference the optical method was checked against.</li>
         </ul>
       </div>
-      <figure><img src="assets/lidust_prototype.webp" alt="The LiDust prototype, a green enclosure with a mounting flange" loading="lazy" style="max-width:380px">
+      <figure><img src="assets/lidust_prototype.webp" alt="The LiDust prototype, a green enclosure with a mounting flange" loading="lazy" style="max-width:340px">
         <figcaption><b>The finished prototype.</b> Rugged enclosure with latches, and a flange with studs for mounting to the stack.</figcaption></figure>
     </div>
-    <h4>Inside the instrument</h4>
-    <p class="group-note">A laser and detector measure the dust; a small computer and custom boards turn the signal into data.</p>
-    <div class="grid tall">
+    <div class="grid tall small-tall">
       <figure><img src="assets/lidust_internals.webp" alt="Side view of the LiDust internals" loading="lazy">
         <figcaption><b>Side view.</b> Laser and detector optics on the upper plate, a Raspberry Pi 4 for data acquisition, signal-conditioning electronics, and the power supply.</figcaption></figure>
       <figure><img src="assets/lidust_optics.webp" alt="Top view of the LiDust optical bench" loading="lazy">
@@ -555,6 +597,8 @@ tabs.forEach((t,i)=>t.addEventListener('keydown',e=>{
   if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
     const n=tabs[(i+(e.key==='ArrowRight'?1:tabs.length-1))%tabs.length];n.focus();show(n);}}));
 const start=tabs.find(t=>('#'+t.id)===location.hash); if(start) show(start);
+const hashEl=(!start&&location.hash)?document.getElementById(location.hash.slice(1)):null;
+if(hashEl){const pn=hashEl.closest('.panel'); if(pn){const tb=tabs.find(x=>x.getAttribute('aria-controls')===pn.id); if(tb) show(tb);}}
 
 /* ---------- PurpleAir overlay chips ---------- */
 (function(){
@@ -566,41 +610,24 @@ const start=tabs.find(t=>('#'+t.id)===location.hash); if(start) show(start);
   });
 })();
 
-/* ---------- inlet explorer: slider drives contour cross-fade + interpolated curve ---------- */
+/* ---------- inlet explorer: real simulation data only, no interpolation ---------- */
 (function(){
-  const XMAX=0.3, YMAX=7;
+  const XMAX=0.3, YMAX=7, CASES=[3,7,11];
   const cases={3:CURVES["3"],7:CURVES["7"],11:CURVES["11"]};
   const flow={3:7.8,7:43,11:101};
   const L={3:document.getElementById('L3'),7:document.getElementById('L7'),11:document.getElementById('L11')};
   const range=document.getElementById('sizeRange'), chips=[...document.querySelectorAll('#sizeChips .chip[data-d]')];
   const peakline=document.getElementById('peakline'), peaktag=document.getElementById('peaktag');
   const rDia=document.getElementById('rDia'), rPeak=document.getElementById('rPeak'), rPos=document.getElementById('rPos'),
-        rFlow=document.getElementById('rFlow'), rFlowNote=document.getElementById('rFlowNote');
+        rFlow=document.getElementById('rFlow'), rFlowNote=document.getElementById('rFlowNote'), status=document.getElementById('status');
   const svg=document.getElementById('chart'), playBtn=document.getElementById('playBtn');
   const bubble=document.getElementById('bubble'), control=document.getElementById('control');
-  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const lerp=(a,b,t)=>a+(b-a)*t;
-  function samp(c,x){ const X=c.x,Y=c.y,n=X.length;
-    if(x<=X[0]) return Y[0]; if(x>=X[n-1]) return Y[n-1];
-    let lo=0,hi=n-1; while(hi-lo>1){const m=(lo+hi)>>1; if(X[m]<=x) lo=m; else hi=m;}
-    return lerp(Y[lo],Y[hi],(x-X[lo])/(X[hi]-X[lo]));
-  }
-  const peak={}; for(const k in cases){const c=cases[k]; let i=0; c.y.forEach((v,j)=>{if(v>c.y[i]) i=j;}); peak[k]={x:c.x[i],y:c.y[i],end:c.x[c.x.length-1]};}
+  const peak={}; CASES.forEach(k=>{const c=cases[k]; let i=0; c.y.forEach((v,j)=>{if(v>c.y[i]) i=j;}); peak[k]={x:c.x[i],y:c.y[i]};});
+  const color={3:'var(--a3)',7:'var(--a2)',11:'var(--a4)'};
 
-  /* curve for any diameter: align by peak position, blend the two neighbouring simulated cases */
-  function curve(d){
-    const a=d<=7?3:7, b=d<=7?7:11, s=d<=7?(d-3)/4:(d-7)/4;
-    const xp=lerp(peak[a].x,peak[b].x,s), xend=lerp(peak[a].end,peak[b].end,s), pts=[];
-    for(let i=0;i<=160;i++){
-      const x=xend*i/160, u=x-xp;
-      pts.push([x,lerp(samp(cases[a],peak[a].x+u),samp(cases[b],peak[b].x+u),s)]);
-    }
-    let pk=pts[0]; pts.forEach(p=>{if(p[1]>pk[1]) pk=p;});
-    return {pts,pk};
-  }
-
-  /* chart scaffold */
+  /* chart scaffold: the three simulated curves, drawn straight from the data */
   const M={l:56,r:18,t:16,b:44}, W=680,H=300, pw=W-M.l-M.r, ph=H-M.t-M.b;
   const X=x=>M.l+x/XMAX*pw, Y=y=>M.t+ph-y/YMAX*ph, NS='http://www.w3.org/2000/svg';
   const mk=(n,at,txt)=>{const e=document.createElementNS(NS,n);for(const k in at)e.setAttribute(k,at[k]);if(txt!=null)e.textContent=txt;svg.appendChild(e);return e;};
@@ -609,39 +636,56 @@ const start=tabs.find(t=>('#'+t.id)===location.hash); if(start) show(start);
   mk('line',{x1:M.l,x2:M.l,y1:M.t,y2:H-M.b,class:'axis'}); mk('line',{x1:M.l,x2:W-M.r,y1:H-M.b,y2:H-M.b,class:'axis'});
   mk('text',{x:M.l+pw/2,y:H-6,'text-anchor':'middle'},'Axial length (m)');
   mk('text',{x:14,y:M.t+ph/2,'text-anchor':'middle',transform:`rotate(-90 14 ${M.t+ph/2})`},'Turbulence intensity (%)');
-  const ghostColor={3:'var(--a3)',7:'var(--a2)',11:'var(--a4)'};
-  [3,7,11].forEach(k=>{
-    const c=cases[k]; mk('path',{d:c.x.map((x,i)=>(i?'L':'M')+X(x).toFixed(1)+' '+Y(c.y[i]).toFixed(1)).join(' '),class:'ghost',stroke:ghostColor[k]});
-    mk('text',{x:X(peak[k].x)+8,y:Y(peak[k].y)-6},k+' mm');
+  const path={}, label={};
+  CASES.forEach(k=>{
+    const c=cases[k];
+    path[k]=mk('path',{d:c.x.map((x,i)=>(i?'L':'M')+X(x).toFixed(1)+' '+Y(c.y[i]).toFixed(1)).join(' '),class:'cv',stroke:color[k]});
+    label[k]=mk('text',{x:X(peak[k].x)+8,y:Y(peak[k].y)-6},k+' mm');
   });
-  const drop=mk('line',{class:'drop',y1:M.t,y2:H-M.b,x1:0,x2:0});
-  const live=mk('path',{class:'live',d:''}), dot=mk('circle',{class:'dot',r:6,cx:0,cy:0});
+  const drop=mk('line',{class:'drop',y1:M.t,y2:H-M.b,x1:0,x2:0,style:'display:none'});
+  const dot=mk('circle',{class:'dot',r:6,cx:0,cy:0,style:'display:none'});
 
   function render(d){
     d=Math.min(11,Math.max(3,d));
-    // contour: bottom layer opaque, upper neighbour fades in -> no dimming, no jump
+    // picture: a visual cross-fade between neighbouring simulated cases (a transition only)
     if(d<=7){ L[3].style.opacity=1; L[7].style.opacity=(d-3)/4; L[11].style.opacity=0; }
     else    { L[3].style.opacity=0; L[7].style.opacity=1; L[11].style.opacity=(d-7)/4; }
-    const {pts,pk}=curve(d);
-    live.setAttribute('d',pts.map((p,i)=>(i?'L':'M')+X(p[0]).toFixed(1)+' '+Y(p[1]).toFixed(1)).join(' '));
-    dot.setAttribute('cx',X(pk[0])); dot.setAttribute('cy',Y(pk[1]));
-    drop.setAttribute('x1',X(pk[0])); drop.setAttribute('x2',X(pk[0]));
-    const pct=pk[0]/XMAX*100; peakline.style.left=pct+'%'; peaktag.style.left=Math.min(92,Math.max(8,pct))+'%'; peaktag.textContent='peak '+pk[1].toFixed(1)+'%';
-    rDia.textContent=d.toFixed(1)+' mm'; rPeak.textContent=pk[1].toFixed(1)+' %'; rPos.textContent=pk[0].toFixed(3)+' m';
-    const near=[3,7,11].find(k=>Math.abs(k-d)<0.06);
-    rFlow.textContent=near?flow[near]+' LPM':'between cases'; rFlowNote.textContent=near?'sampling flow rate (simulated case)':'flow rates simulated at 7.8, 43 and 101 LPM';
+    const near=CASES.reduce((a,b)=>Math.abs(b-d)<Math.abs(a-d)?b:a);
+    const on=Math.abs(near-d)<0.05;
+    const lo=d<=7?3:7, hi=d<=7?7:11;
+    CASES.forEach(k=>{
+      let w=1.5,o=0.3;                                          // other cases: faint
+      if(on){ if(k===near){w=3.6;o=1;} }
+      else  { if(k===lo||k===hi){w=2.4;o=0.85;} }               // between: both neighbouring cases shown as they are
+      path[k].style.strokeWidth=w; path[k].style.opacity=o; label[k].style.opacity=on&&k!==near?0.4:1;
+    });
+    if(on){
+      dot.style.display=''; drop.style.display='';
+      dot.setAttribute('cx',X(peak[near].x)); dot.setAttribute('cy',Y(peak[near].y)); dot.setAttribute('fill',color[near]);
+      drop.setAttribute('x1',X(peak[near].x)); drop.setAttribute('x2',X(peak[near].x)); drop.setAttribute('stroke',color[near]);
+      const pct=peak[near].x/XMAX*100; peakline.style.display=''; peaktag.style.display='';
+      peakline.style.left=pct+'%'; peaktag.style.left=Math.min(92,Math.max(8,pct))+'%'; peaktag.textContent='peak '+peak[near].y.toFixed(1)+'%';
+      rPeak.textContent=peak[near].y.toFixed(1)+' %'; rPos.textContent=peak[near].x.toFixed(3)+' m';
+      rFlow.textContent=flow[near]+' LPM'; rFlowNote.textContent='sampling flow rate (simulated case)';
+      status.textContent='Simulated case: '+near+' mm, '+flow[near]+' LPM. Peak turbulence '+peak[near].y.toFixed(1)+'% at '+peak[near].x.toFixed(3)+' m.';
+    } else {
+      dot.style.display='none'; drop.style.display='none'; peakline.style.display='none'; peaktag.style.display='none';
+      rPeak.textContent='n/a'; rPos.textContent='n/a'; rFlow.textContent='between cases';
+      rFlowNote.textContent='simulated at 7.8, 43 and 101 LPM';
+      status.textContent='Between the '+lo+' mm and '+hi+' mm cases. No simulation at this size: the curves shown are the two simulated cases, and the picture is only a transition.';
+    }
+    rDia.textContent=d.toFixed(1)+' mm';
     range.value=d; range.setAttribute('aria-valuetext',d.toFixed(1)+' millimeters');
-    // slider fill + floating value bubble that follows the thumb
     const p=(d-3)/8; range.style.setProperty('--p',(p*100)+'%');
     bubble.style.left='calc(16px + (100% - 32px) * '+p+')'; bubble.textContent=d.toFixed(1)+' mm';
-    chips.forEach(c=>c.setAttribute('aria-pressed',Math.abs(+c.dataset.d-d)<0.06));
+    chips.forEach(c=>c.setAttribute('aria-pressed',on&&+c.dataset.d===near));
   }
 
   /* tick labels under the slider (click to jump) */
   const ticks=document.getElementById('ticks');
   [[3,'3 mm','7.8 LPM'],[7,'7 mm','43 LPM'],[11,'11 mm','101 LPM']].forEach(([v,a,b])=>{
     const s=document.createElement('span'); s.style.left=((v-3)/8*100)+'%'; s.innerHTML='<b>'+a+'</b><br>'+b;
-    s.addEventListener('click',()=>{ stopPlay(); animateTo(v); }); ticks.appendChild(s);
+    s.addEventListener('click',()=>{ stopPlay(); unpulse(); animateTo(v); }); ticks.appendChild(s);
   });
 
   /* smooth, slow animation toward a target diameter (sine ease in and out) */
@@ -658,8 +702,12 @@ const start=tabs.find(t=>('#'+t.id)===location.hash); if(start) show(start);
       })(t0);
     });
   }
-  const unpulse=()=>control.classList.remove('pulse');
-  range.addEventListener('input',()=>{ unpulse(); stopPlay(); cancelAnimationFrame(raf); cur=+range.value; render(cur); });
+  function unpulse(){ control.classList.remove('pulse'); }
+  range.addEventListener('input',()=>{
+    unpulse(); stopPlay(); cancelAnimationFrame(raf);
+    let v=+range.value; const s=CASES.find(k=>Math.abs(k-v)<0.25); if(s!==undefined) v=s;   // snap to a simulated case
+    cur=v; render(cur);
+  });
   chips.forEach(c=>c.addEventListener('click',()=>{ unpulse(); stopPlay(); animateTo(+c.dataset.d); }));
 
   /* play sweep: 3 -> 7 -> 11 -> 7 -> 3, each leg slow, with a pause at each simulated case */
@@ -669,15 +717,15 @@ const start=tabs.find(t=>('#'+t.id)===location.hash); if(start) show(start);
   playBtn.addEventListener('click',async()=>{
     if(playing){ stopPlay(); cancelAnimationFrame(raf); return; }
     unpulse(); playing=true; const my=++token; playBtn.innerHTML='&#10074;&#10074; Pause';
-    const path=cur>=10.9?[7,3]:cur>=6.9?[11,7,3]:[7,11,7,3];
+    const path2=cur>=10.9?[7,3]:cur>=6.9?[11,7,3]:[7,11,7,3];
     while(playing&&my===token){
-      for(const target of path){
+      for(const target of path2){
         if(!(playing&&my===token)) return;
         await animateTo(target,5500);
         if(!(playing&&my===token)) return;
-        await wait(1600);
+        await wait(1800);
       }
-      path.splice(0,path.length,7,11,7,3);   // later loops always run the full 3 -> 11 -> 3 cycle
+      path2.splice(0,path2.length,7,11,7,3);
     }
   });
 
