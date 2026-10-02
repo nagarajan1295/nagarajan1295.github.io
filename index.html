@@ -58,14 +58,14 @@
 
   /* hero: a faded photo sits quietly behind the right side */
   header.hero{padding:76px 0 64px;position:relative;isolation:isolate}
-  .hero-bg{position:absolute;z-index:-1;left:-10px;top:20px;width:min(46%,500px);height:auto;aspect-ratio:1000/960;object-fit:cover;opacity:.34;pointer-events:none;user-select:none;
-     -webkit-mask-image:radial-gradient(ellipse 62% 54% at 40% 50%,#000 32%,transparent 100%),linear-gradient(to right,transparent 0,#000 9%,#000 54%,transparent 96%);
+  .hero-bg{position:absolute;z-index:-1;left:-10px;top:8px;width:min(56%,600px);height:auto;aspect-ratio:1000/960;object-fit:cover;opacity:.7;pointer-events:none;user-select:none;
+     -webkit-mask-image:linear-gradient(to right,transparent 0,#000 5%,#000 44%,transparent 100%),linear-gradient(to bottom,transparent 0,#000 7%,#000 84%,transparent 100%);
      -webkit-mask-composite:source-in;
-     mask-image:radial-gradient(ellipse 62% 54% at 40% 50%,#000 32%,transparent 100%),linear-gradient(to right,transparent 0,#000 9%,#000 54%,transparent 96%);
-     mask-composite:intersect;filter:saturate(.9)}
-  :root[data-theme="dark"] .hero-bg{opacity:.26}
-  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .hero-bg{opacity:.26}}
-  .hero-text{max-width:min(560px,calc(100% - 430px));margin-left:auto;position:relative}
+     mask-image:linear-gradient(to right,transparent 0,#000 5%,#000 44%,transparent 100%),linear-gradient(to bottom,transparent 0,#000 7%,#000 84%,transparent 100%);
+     mask-composite:intersect}
+  :root[data-theme="dark"] .hero-bg{opacity:.5}
+  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .hero-bg{opacity:.5}}
+  .hero-text{max-width:min(580px,calc(100% - 440px));margin-left:auto;position:relative}
   .eyebrow{color:var(--a2);font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px}
   h1{font-size:clamp(36px,6vw,54px);line-height:1.2;font-weight:800;margin:0 0 18px;padding-bottom:.08em;color:var(--accent)}
   .lead{max-width:46em;margin:0 0 20px}
@@ -238,10 +238,10 @@
   @media (max-width:900px){
     header.hero{padding-top:0}
     .hero-text{max-width:none;margin-left:0}
-    .hero-bg{position:relative;display:block;left:auto;top:auto;width:calc(100% + 40px);margin:0 -20px 14px;height:290px;aspect-ratio:auto;object-position:20% 20%;opacity:.55;
+    .hero-bg{position:relative;display:block;left:auto;top:auto;width:calc(100% + 40px);margin:0 -20px 14px;height:290px;aspect-ratio:auto;object-position:20% 20%;opacity:.8;
        -webkit-mask-image:linear-gradient(to bottom,#000 55%,transparent 100%);mask-image:linear-gradient(to bottom,#000 55%,transparent 100%);
        -webkit-mask-composite:source-over;mask-composite:add}
-    :root[data-theme="dark"] .hero-bg{opacity:.38}
+    :root[data-theme="dark"] .hero-bg{opacity:.55}
   }
   @media (max-width:760px){
     .two{grid-template-columns:1fr}
