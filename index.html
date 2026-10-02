@@ -200,8 +200,15 @@
   .viz{display:grid;grid-template-columns:1.7fr 1fr;gap:16px;align-items:start;margin-top:16px}
   .viz svg.chart{margin-top:0}
   .viz .readout{grid-template-columns:1fr 1fr;margin:0}
-  .control{position:sticky;bottom:12px;z-index:6;box-shadow:0 -4px 18px rgba(0,0,0,.14),var(--shadow)}
-  @media (max-width:760px){.viz{grid-template-columns:1fr} .control .label span{display:none} .control .label{margin-bottom:34px} .legend span:last-child{display:none}}
+  @media (max-width:760px){
+    .viz{display:contents}
+    .widget{display:flex;flex-direction:column}
+    .widget svg.chart{order:1;margin-top:16px}
+    .widget .control{order:2}
+    .widget .readout{order:3;grid-template-columns:1fr 1fr;margin:12px 0 0}
+    .widget p.note{order:4}
+    .control .label span{display:none} .control .label{margin-bottom:34px} .legend span:last-child{display:none}
+  }
 </style>
 <script>
   /* apply a saved theme choice before first paint (falls back to the system setting) */
@@ -489,8 +496,8 @@
         <a href="https://doi.org/10.1080/02786826.2023.2285935">doi:10.1080/02786826.2023.2285935</a></li>
     <li><b>Radhakrishnan, N.</b>, Dhaniyala, S. Nested Inlet for Sampling Stratospheric Aerosol (NISSA): Design, development, and evaluation.
         <i>To be submitted to Atmospheric Measurement Techniques, November 2026.</i></li>
-    <li><b>Radhakrishnan, N.</b>, Dhaniyala, S. In-flight turbulence, pressure, and velocity measurements in a nested aircraft inlet for stratospheric aerosol sampling. <i>In preparation.</i></li>
-    <li><b>Radhakrishnan, N.</b>, Dhaniyala, S. Stratospheric aerosol sampling from high-altitude aircraft: In-flight measurements and machine learning analysis of particle transport efficiency. <i>In preparation.</i></li>
+    <li><b>Radhakrishnan, N.</b>, Dhaniyala, S. Fundamental turbulence measurement in aircraft inlets. <i>In preparation.</i></li>
+    <li><b>Radhakrishnan, N.</b>, Dhaniyala, S. Particle measurements, impact of turbulence in aircraft inlets. <i>In preparation.</i></li>
   </ol>
   <p>Honors: Best Student Oral Platform Presentation, AAAR (2025); Best Student Poster, AAAR (2022); Best Graduate Oral Presentation and 3rd place project pitch, Clarkson RAPS (2025).
      NISSA's flights were featured by the NOAA Climate Program Office and Clarkson University.</p>
