@@ -88,12 +88,16 @@
       </div>
 
       <div class="control pulse" id="control">
-        <div class="label"><b>drag this to change the tube size</b> <span>or use the arrow keys</span></div>
-        <div class="track">
-          <div class="bubble" id="bubble">3.0 mm</div>
-          <input type="range" id="sizeRange" min="3" max="11" step="0.01" value="3" aria-label="Sampling tube diameter in millimeters">
+        <div class="label"><b>Drag the slider to change the sampling-tube size</b> <span>or use the arrow buttons</span></div>
+        <div class="ctl-grid">
+          <button class="step" id="stepDown" type="button" aria-label="Smaller tube">&#9664;</button>
+          <div class="track">
+            <div class="bubble" id="bubble">3.0 mm</div>
+            <input type="range" id="sizeRange" min="3" max="11" step="0.01" value="3" aria-label="Sampling tube diameter in millimeters">
+          </div>
+          <button class="step" id="stepUp" type="button" aria-label="Larger tube">&#9654;</button>
+          <div class="ticks" id="ticks"></div>
         </div>
-        <div class="ticks" id="ticks"></div>
       </div>
       <p class="note" id="status" style="margin:12px 0 0" aria-live="polite">Simulated case: 3 mm, 7.8 LPM.</p>
     </div>

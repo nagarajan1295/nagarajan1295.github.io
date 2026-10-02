@@ -63,7 +63,7 @@
     drop.setAttribute('x1',X(pk[0])); drop.setAttribute('x2',X(pk[0]));
     const pct=pk[0]/XMAX*100; peakline.style.left=pct+'%'; peaktag.style.left=Math.min(92,Math.max(8,pct))+'%'; peaktag.textContent='peak '+pk[1].toFixed(1)+'%';
     const p=(d-3)/8; range.style.setProperty('--p',(p*100)+'%');
-    bubble.style.left='calc(16px + (100% - 32px) * '+p+')'; bubble.textContent=d.toFixed(1)+' mm';
+    bubble.style.left='calc(20px + (100% - 40px) * '+p+')'; bubble.textContent=d.toFixed(1)+' mm';
     range.value=d;
     // text readouts: refresh only when they would visibly change
     if(Math.abs(d-lastText)>0.04||d===3||d===11){
@@ -135,6 +135,22 @@
     let start=0; if(cur>=10.95) start=2; else if(cur>7.05) start=1; else if(Math.abs(cur-7)<=0.05) start=1;
     const ordered=legs.slice(start).concat(legs.slice(0,start));
     run(ordered,true);
+  });
+
+  /* step buttons and arrow keys: move half a millimetre, stopping on each simulated case */
+  function stepBy(dir){
+    unpulse();
+    let to=Math.min(11,Math.max(3,cur+dir*0.5));
+    const hit=CASES.filter(k=>dir>0?(k>cur+0.05&&k<=to+1e-4):(k<cur-0.05&&k>=to-1e-4));
+    if(hit.length) to=dir>0?Math.min(...hit):Math.max(...hit);
+    if(Math.abs(to-cur)<1e-3) return;
+    run([{to,dur:450,hold:0}],false);
+  }
+  document.getElementById('stepDown').addEventListener('click',()=>stepBy(-1));
+  document.getElementById('stepUp').addEventListener('click',()=>stepBy(1));
+  range.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight'||e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();stepBy(1);}
+    else if(e.key==='ArrowLeft'||e.key==='ArrowDown'||e.key==='PageDown'){e.preventDefault();stepBy(-1);}
   });
 
   cur=3; render(cur);
