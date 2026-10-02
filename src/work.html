@@ -60,9 +60,7 @@
 
     <div class="widget" id="explorer">
       <h3>Interactive: change the sampling-tube size and watch the turbulence move</h3>
-      <p class="hint"><b>How to read this:</b> the inlet was simulated with three sampling-tube sizes: 3, 7 and 11 mm. Drag the slider (it snaps to each simulated case) or tap a size.
-         Color in the picture is turbulence intensity along the inlet; the graph shows turbulence along the centerline, straight from the simulation data.
-         A larger tube moves the turbulence peak further downstream and lowers it, which is how the design keeps the sampled air calm.</p>
+      <p class="hint"><b>How to read this:</b> the inlet was simulated with three sampling-tube sizes: 3, 7 and 11 mm. Drag the slider, or tap a size, and the picture and the graph move smoothly between them. At 3, 7 and 11 mm everything is straight from the simulations; in between, the curve and picture are interpolated. Color is turbulence intensity along the inlet, and the graph shows it along the centerline. A larger tube moves the turbulence peak further downstream and lowers it, which is how the design keeps the sampled air calm.</p>
       <div class="chips" id="sizeChips">
         <button class="chip" data-d="3" aria-pressed="false">3 mm</button>
         <button class="chip" data-d="7" aria-pressed="false">7 mm</button>
@@ -83,14 +81,14 @@
         <svg class="chart" id="chart" viewBox="0 0 680 300" role="img" aria-label="Centerline turbulence intensity versus axial length for the 3, 7 and 11 mm cases"></svg>
         <div class="readout">
           <div><b id="rDia">3.0 mm</b><span>sampling-tube diameter</span></div>
-          <div><b id="rPeak">6.8 %</b><span>peak centerline turbulence intensity</span></div>
+          <div><b id="rPeak">6.8 %</b><span id="rPeakNote">peak centerline turbulence intensity</span></div>
           <div><b id="rPos">0.045 m</b><span>peak position along the inlet</span></div>
           <div><b id="rFlow">7.8 LPM</b><span id="rFlowNote">sampling flow rate (simulated case)</span></div>
         </div>
       </div>
 
       <div class="control pulse" id="control">
-        <div class="label">&#8596; Drag the slider to change the tube size <span>or use the arrow keys</span></div>
+        <div class="label"><b>drag this to change the tube size</b> <span>or use the arrow keys</span></div>
         <div class="track">
           <div class="bubble" id="bubble">3.0 mm</div>
           <input type="range" id="sizeRange" min="3" max="11" step="0.01" value="3" aria-label="Sampling tube diameter in millimeters">
