@@ -196,6 +196,12 @@
     .chip.play{margin-left:0}
     .control{padding:14px 12px 8px}
   }
+  /* graph sits right under the contour; the slider stays pinned at the bottom of the screen while you drag */
+  .viz{display:grid;grid-template-columns:1.7fr 1fr;gap:16px;align-items:start;margin-top:16px}
+  .viz svg.chart{margin-top:0}
+  .viz .readout{grid-template-columns:1fr 1fr;margin:0}
+  .control{position:sticky;bottom:12px;z-index:6;box-shadow:0 -4px 18px rgba(0,0,0,.14),var(--shadow)}
+  @media (max-width:760px){.viz{grid-template-columns:1fr} .control .label span{display:none} .control .label{margin-bottom:34px} .legend span:last-child{display:none}}
 </style>
 <script>
   /* apply a saved theme choice before first paint (falls back to the system setting) */
@@ -235,7 +241,6 @@
         <button type="button" data-copy="radhakn@clarkson.edu">Copy the address</button>
       </div>
     </details>
-    <a class="btn" href="https://github.com/nagarajan1295">GitHub</a>
   </div>
 </header>
 
@@ -296,6 +301,16 @@
       </div>
       <div class="legend"><span>Low turbulence</span><i></i><span>High turbulence</span><span style="margin-left:auto">Flow runs left to right, 0 to 0.3 m</span></div>
 
+      <div class="viz">
+      <svg class="chart" id="chart" viewBox="0 0 680 300" role="img" aria-label="Centerline turbulence intensity versus axial length"></svg>
+      <div class="readout">
+        <div><b id="rDia">3.0 mm</b><span>sampling-tube diameter</span></div>
+        <div><b id="rPeak">6.8 %</b><span>peak centerline turbulence intensity</span></div>
+        <div><b id="rPos">0.045 m</b><span>peak position along the inlet</span></div>
+        <div><b id="rFlow">7.8 LPM</b><span id="rFlowNote">sampling flow rate (simulated case)</span></div>
+      </div>
+
+      </div>
       <div class="control pulse" id="control">
         <div class="label">&#8596; Drag the slider to change the tube size <span>or use the arrow keys</span></div>
         <div class="track">
@@ -305,14 +320,6 @@
         <div class="ticks" id="ticks"></div>
       </div>
 
-      <div class="readout">
-        <div><b id="rDia">3.0 mm</b><span>sampling-tube diameter</span></div>
-        <div><b id="rPeak">6.8 %</b><span>peak centerline turbulence intensity</span></div>
-        <div><b id="rPos">0.045 m</b><span>peak position along the inlet</span></div>
-        <div><b id="rFlow">7.8 LPM</b><span id="rFlowNote">sampling flow rate (simulated case)</span></div>
-      </div>
-
-      <svg class="chart" id="chart" viewBox="0 0 680 330" role="img" aria-label="Centerline turbulence intensity versus axial length"></svg>
       <p class="note" style="margin:10px 0 0">Faint lines are the three simulated cases (3, 7 and 11 mm). Between them, the bold curve and the picture are smoothly interpolated as a visual guide, not new simulations.</p>
     </div>
 
@@ -502,7 +509,6 @@
         <button type="button" data-copy="radhakn@clarkson.edu">Copy the address</button>
       </div>
     </details>
-    <a class="btn" href="https://github.com/nagarajan1295">GitHub</a>
   </div>
 </section>
 
@@ -588,7 +594,7 @@ const start=tabs.find(t=>('#'+t.id)===location.hash); if(start) show(start);
   }
 
   /* chart scaffold */
-  const M={l:56,r:18,t:16,b:44}, W=680,H=330, pw=W-M.l-M.r, ph=H-M.t-M.b;
+  const M={l:56,r:18,t:16,b:44}, W=680,H=300, pw=W-M.l-M.r, ph=H-M.t-M.b;
   const X=x=>M.l+x/XMAX*pw, Y=y=>M.t+ph-y/YMAX*ph, NS='http://www.w3.org/2000/svg';
   const mk=(n,at,txt)=>{const e=document.createElementNS(NS,n);for(const k in at)e.setAttribute(k,at[k]);if(txt!=null)e.textContent=txt;svg.appendChild(e);return e;};
   for(let y=0;y<=YMAX;y++){ mk('line',{x1:M.l,x2:W-M.r,y1:Y(y),y2:Y(y),class:'gridline'}); mk('text',{x:M.l-8,y:Y(y)+4,'text-anchor':'end'},y); }
