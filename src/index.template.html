@@ -58,14 +58,16 @@
 
   /* hero: a faded photo sits quietly behind the right side */
   header.hero{padding:76px 0 64px;position:relative;isolation:isolate}
-  .hero-bg{position:absolute;z-index:-1;left:-10px;top:8px;width:min(56%,600px);height:auto;aspect-ratio:1000/960;object-fit:cover;opacity:.7;pointer-events:none;user-select:none;
-     -webkit-mask-image:linear-gradient(to right,transparent 0,#000 5%,#000 44%,transparent 100%),linear-gradient(to bottom,transparent 0,#000 7%,#000 84%,transparent 100%);
+  .hero-bg{position:absolute;z-index:-1;left:-6px;top:8px;width:min(66%,720px);height:auto;aspect-ratio:1180/960;object-fit:cover;opacity:.8;pointer-events:none;user-select:none;
+     -webkit-mask-image:radial-gradient(ellipse 54% 48% at 52% 49%,#000 56%,transparent 100%),linear-gradient(to right,#000 0,#000 42%,transparent 86%);
      -webkit-mask-composite:source-in;
-     mask-image:linear-gradient(to right,transparent 0,#000 5%,#000 44%,transparent 100%),linear-gradient(to bottom,transparent 0,#000 7%,#000 84%,transparent 100%);
+     mask-image:radial-gradient(ellipse 54% 48% at 52% 49%,#000 56%,transparent 100%),linear-gradient(to right,#000 0,#000 42%,transparent 86%);
      mask-composite:intersect}
-  :root[data-theme="dark"] .hero-bg{opacity:.5}
-  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .hero-bg{opacity:.5}}
-  .hero-text{max-width:min(580px,calc(100% - 440px));margin-left:auto;position:relative}
+  :root[data-theme="dark"] .hero-bg{opacity:.55}
+  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .hero-bg{opacity:.55}}
+  .hero-text{max-width:min(580px,calc(100% - 440px));margin-left:auto;position:relative;isolation:isolate}
+  .hero-text::before{content:"";position:absolute;z-index:-1;inset:-34px -26px -30px -70px;pointer-events:none;
+     background:radial-gradient(ellipse 56% 56% at 52% 50%,color-mix(in srgb,var(--bg) 96%,transparent) 62%,transparent 100%)}
   .eyebrow{color:var(--a2);font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px}
   h1{font-size:clamp(36px,6vw,54px);line-height:1.2;font-weight:800;margin:0 0 18px;padding-bottom:.08em;color:var(--accent)}
   .lead{max-width:46em;margin:0 0 20px}
@@ -238,6 +240,7 @@
   @media (max-width:900px){
     header.hero{padding-top:0}
     .hero-text{max-width:none;margin-left:0}
+    .hero-text::before{display:none}
     .hero-bg{position:relative;display:block;left:auto;top:auto;width:calc(100% + 40px);margin:0 -20px 14px;height:290px;aspect-ratio:auto;object-position:20% 20%;opacity:.8;
        -webkit-mask-image:linear-gradient(to bottom,#000 55%,transparent 100%);mask-image:linear-gradient(to bottom,#000 55%,transparent 100%);
        -webkit-mask-composite:source-over;mask-composite:add}
@@ -279,7 +282,7 @@
 <main class="wrap">
 
 <header class="hero" id="about">
-  <img class="hero-bg" src="assets/hero_bg.webp" alt="" aria-hidden="true" width="1000" height="960">
+  <picture><source media="(min-width:901px)" srcset="assets/hero_bg_wide.webp"><img class="hero-bg" src="assets/hero_bg.webp" alt="" aria-hidden="true" width="1000" height="960"></picture>
   <div class="hero-text">
     <div class="eyebrow">Mechanical engineer &middot; aerosol science and measurement</div>
     <h1>Nagarajan Radhakrishnan</h1>
