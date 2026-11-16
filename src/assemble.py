@@ -4,7 +4,7 @@ import pathlib, re
 
 d = pathlib.Path(__file__).parent
 old = (d / "index.template.html").read_text(encoding="utf-8")
-css = (d / "style.css").read_text(encoding="utf-8")
+css = (d / "style.css").read_text(encoding="utf-8") + (d / "theme.css").read_text(encoding="utf-8")
 body = (d / "body.html").read_text(encoding="utf-8")
 
 # ---------- inline links: [[key|text]] -> a quiet link that opens in a new tab ----------
